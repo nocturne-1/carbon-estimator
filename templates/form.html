@@ -5,8 +5,6 @@
         <title>Carbon Estimate Form</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-            <link rel="stylesheet" href="style.css">
         
             <script src="{{ url_for('static', filename='app.js') }}"></script>
     </head>
@@ -16,7 +14,71 @@
             <p>
                 <label>Username/Nickname:</label>
                 <input type="text" id="name" name="user_name" /><br><br>
-                
+                <label for="activity">Activity (Choose One): </label>
+                <select id="activity" name="activity" size="4">
+                    <option value="electricity">Used Electricity</option>
+                    <option value="flight">Took a Flight</option>
+                    <option value="shipping">Shipped Parcel</option>
+                    <option value="bought_shipping">Bought Good Requiring Shipping</option>
+                    <option value="vehicle">Car Ride</option>
+                </select><br><br>
+
+                <label for="electricity_activity">What Specifically Used Electricity? </label>
+                <select id="electricity_activity" name="electricity_activity">
+                    <option value="heating">Portable Heater</option>
+                    <option value="cooling">A/C (Window/Wall)</option>
+                    <option value="cooling_fan">Ceiling Fan</option>
+                    <option value="kitchen-appliances_oven">Oven</option>
+                    <option value="kitchen-appliances_dishwasher">Dishwasher</option>
+                    <option value="refrigeration">Refrigerator</option>
+                    <option value="electronic_tv">TV</option>
+                    <option value="electronic_desktop">Desktop PC</option>
+                    <option value="electronic_laptop">Laptop</option>
+                    <option value="electronic_monitor">Monitor</option>
+                </select><br><br>
+                <label for="duration">Duration(in hrs or, for refrigerator, days): </label>
+                <input id="duration" type="text"><br><br>
+                <label for="country">Country: </label>
+                <input id="country" type="text"><br><br>
+                <label for="state">State: </label>
+                <input id="state" type="text"><br><br>
+
+                <label for="departure">Departure Airport (3-Letter Code): </label>
+                <input id="departure" type="text"><br><br>
+                <label for="destination">Destination Airport (3-Letter Code): </label>
+                <input id="destination" type="text"><br><br>
+                <label for="cabin_class">Cabin Class (Optional; Leave Blank if Not Answering): </label>
+                <select id="cabin_class" name="cabin_class">
+                    <option value="economy">Economy</option>
+                    <option value="premium">Premium</option>
+                </select><br><br>
+
+                <label for="parcel_weight">Approximate Parcel Weight (specify lb or kg, otherwise kg is assumed): </label>
+                <input id="parcel_weight" type="text"><br><br>
+                <label for="shipping_zone">Shipping Zone: </label>
+                <select id="shipping_zone" name="shipping_zone">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select><br><br>
+
+                <label for="warehouse_loc">Shipped From/Warehouse Location (City Name, Country): </label>
+                <input id="warehous_loc" type="text"><br><br>
+                <label for="current_loc">Shipped To (City Name, Country): </label>
+                <input id="current_loc" type="text"><br><br>
+
+                <label for="vehicle_make">Vehicle Make (Toyota, Honda, etc.): </label>
+                <input id="vehicle_make" type="text"><br><br>
+                <label for="vehicle_model">Vehicle Model (in the form Name, Year): </label>
+                <input id="vehicle_model" type="text"><br><br>
+                <label for="distance">Distance Traveled (specify mi or km, otherwise default will be mi): </label>
+                <input id="distance" type="text"><br><br>
+
                 <button id="submitForm">Submit</button>
         </p>
     </form>
