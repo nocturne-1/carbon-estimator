@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 app.debug = True
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
-app.config["SQL_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
@@ -20,28 +20,6 @@ class Profile(db.Model):
 
     def __repr__(self):
         return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Country: {self.country}, State: {self.state}."
-
-from flask import Flask, request, render_template, g, redirect
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.debug = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-
-db = SQLAlchemy(app)
-
-class Profile(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=False, nullable=False)
-    activity = db.Column(db.String(30), unique=False, nullable=False)
-    elecactivity = db.Column(db.String(20), unique=False, nullable=False)
-    duration = db.Column(db.String(20), unique=False, nullable=False)
-    country = db.Column(db.String(20), unique=False, nullable=False)
-    state = db.Column(db.String(20), unique=False, nullable=False)
-
-    def __repr__(self):
-        return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Country: {self.country}, State: {self.state}."
-
 
 @app.route('/')
 def index():
