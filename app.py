@@ -21,6 +21,15 @@ class Profile(db.Model):
     def __repr__(self):
         return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Country: {self.country}, State: {self.state}."
 
+def initialize_db():
+    with app.app_context():
+        try:
+            db.create_all()
+        except Exception as e:
+            print(f"Error creating database: {e}")
+
+initialize_db()
+
 @app.route('/')
 def index():
     profiles = Profile.query.all()
@@ -39,10 +48,19 @@ def formdata():
         duration = request.form.get("duration")
         country = request.form.get("country")
         state = request.form.get("state")
+
+        print(f"User: '{user}' (type: {type(user)})")
+        print(f"Activity: '{activity}' (type: {type(activity)})")
+        print(f"Electricity Activity: '{elecactivity}' (type: {type(elecactivity)})")
+        print(f"Duration: '{duration}' (type: {type(duration)})")
+        print(f"Country: '{country}' (type: {type(country)})")
+        print(f"State: '{state}' (type: {type(state)})")
+
         if user != "" and activity == "electricity":
             p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, country=country, state=state)
             db.session.add(p)
             db.session.commit()
+            print("committed")
             return redirect('/')
         else:
             return redirect('/')
@@ -55,6 +73,4 @@ def erase(id):
     return redirect('/')
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
