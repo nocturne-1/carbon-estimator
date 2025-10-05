@@ -20,11 +20,10 @@ class Profile(db.Model):
     elecactivity = db.Column(db.String(20), unique=False, nullable=False)
     duration = db.Column(db.String(20), unique=False, nullable=False)
     power_usage = db.Column(db.Integer, unique=False, nullable=True)
-    country = db.Column(db.String(20), unique=False, nullable=False)
-    state = db.Column(db.String(20), unique=False, nullable=False)
+    co2e = db.Column(db.String(20), unique=False, nullable=True)
 
     def __repr__(self):
-        return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Power Usage: {self.power_usage}, Country: {self.country}, State: {self.state}."
+        return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Power Usage: {self.power_usage}, CO2e: {self.co2e}."
 
 def initialize_db():
     with app.app_context():
@@ -57,7 +56,7 @@ electricity_data = {
     "electronic_monitor": 0.08
 }  
 
-def make_api_request(power_usage, country, state):
+def make_api_request(power_usage):
     api_key = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
@@ -75,9 +74,8 @@ def make_api_request(power_usage, country, state):
     }
     try:
         response = requests.post(url, headers=headers, json=electricity_request)
-        print("Status code:", response.status_code)
-        print("Response text:", response.text)
-        print(response.json())
+        data = response.json()
+        return f"{data['co2e']} {data['co2e_unit']}"
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         response = None
@@ -90,21 +88,17 @@ def formdata():
         elecactivity = request.form.get("electricity_activity")
         duration = request.form.get("duration")
         power_usage = int(int(duration) * electricity_data.get(elecactivity, 0))
-        country = request.form.get("country")
-        state = request.form.get("state")
-        
-        make_api_request(power_usage, country, state)
+        co2e = make_api_request(power_usage)
 
         print(f"User: '{user}' (type: {type(user)})")
         print(f"Activity: '{activity}' (type: {type(activity)})")
         print(f"Electricity Activity: '{elecactivity}' (type: {type(elecactivity)})")
         print(f"Duration: '{duration}' (type: {type(duration)})")
         print(f"Power Usage: '{power_usage}' (type: {type(power_usage)})")
-        print(f"Country: '{country}' (type: {type(country)})")
-        print(f"State: '{state}' (type: {type(state)})")
+        print(f"CO2e: '{co2e}' (type: {type(co2e)})")
 
         if user != "" and activity == "electricity":
-            p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, power_usage=power_usage, country=country, state=state)
+            p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, power_usage=power_usage, co2e=co2e)
             db.session.add(p)
             db.session.commit()
             print("committed")
