@@ -19,7 +19,7 @@ class Profile(db.Model):
     activity = db.Column(db.String(30), unique=False, nullable=False)
     elecactivity = db.Column(db.String(20), unique=False, nullable=False)
     duration = db.Column(db.String(20), unique=False, nullable=False)
-    power_usage = db.Column(db.Float, unique=False, nullable=True)
+    power_usage = db.Column(db.Integer, unique=False, nullable=True)
     country = db.Column(db.String(20), unique=False, nullable=False)
     state = db.Column(db.String(20), unique=False, nullable=False)
 
@@ -58,21 +58,25 @@ electricity_data = {
 }  
 
 def make_api_request(power_usage, country, state):
-    api_key = "2dtUcPy8pQgf3Kbx7NUPMQ"
-    url = "https://www.carboninterface.com/api/v1/estimates"
+    api_key = "0ZB2BTF0F11737QNANS38E7JMW"
+    url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
-        "X-API-Key": api_key
+        "Authorization": f"Bearer {api_key}"
     }
     electricity_request = {
-        "type": "electricity",
-        "electricity_unit": "kwh",
-        "electricity_value": "{power_usage}",
-        "country": "{country}",
-        "state": "{state}"
+        "emission_factor": {
+            "activity_id": "electricity-supply_grid-source_residual_mix",
+            "data_version": "^21"
+        }, "parameters": {
+            "energy": power_usage,
+            "energy_unit": "kWh"
         }
+    }
     try:
-        response = requests.post(url, headers=headers, data=electricity_request)
+        response = requests.post(url, headers=headers, json=electricity_request)
+        print("Status code:", response.status_code)
+        print("Response text:", response.text)
         print(response.json())
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
@@ -85,7 +89,7 @@ def formdata():
         activity = request.form.get("activity")
         elecactivity = request.form.get("electricity_activity")
         duration = request.form.get("duration")
-        power_usage = int(duration) * electricity_data.get(elecactivity, 0)
+        power_usage = int(int(duration) * electricity_data.get(elecactivity, 0))
         country = request.form.get("country")
         state = request.form.get("state")
         
