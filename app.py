@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 import requests
+import json
 
 app = Flask(__name__)
 
@@ -54,7 +55,28 @@ electricity_data = {
     "electronic_desktop": 0.15,
     "electronic_laptop": 0.05,
     "electronic_monitor": 0.08
-}   
+}  
+
+def make_api_request(power_usage, country, state):
+    api_key = "2dtUcPy8pQgf3Kbx7NUPMQ"
+    url = "https://www.carboninterface.com/api/v1/estimates"
+    headers = {
+        "Content-Type": "application/json",
+        "X-API-Key": api_key
+    }
+    electricity_request = {
+        "type": "electricity",
+        "electricity_unit": "kwh",
+        "electricity_value": "{power_usage}",
+        "country": "{country}",
+        "state": "{state}"
+        }
+    try:
+        response = requests.post(url, headers=headers, data=electricity_request)
+        print(response.json())
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+        response = None
 
 @app.route('/add', methods=["GET", "POST"])
 def formdata():
@@ -63,9 +85,11 @@ def formdata():
         activity = request.form.get("activity")
         elecactivity = request.form.get("electricity_activity")
         duration = request.form.get("duration")
-        power_usage = duration * electricity_data.get(elecactivity, 0)
+        power_usage = int(duration) * electricity_data.get(elecactivity, 0)
         country = request.form.get("country")
         state = request.form.get("state")
+        
+        make_api_request(power_usage, country, state)
 
         print(f"User: '{user}' (type: {type(user)})")
         print(f"Activity: '{activity}' (type: {type(activity)})")
@@ -76,21 +100,15 @@ def formdata():
         print(f"State: '{state}' (type: {type(state)})")
 
         if user != "" and activity == "electricity":
-            p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, country=country, state=state)
+            p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, power_usage=power_usage, country=country, state=state)
             db.session.add(p)
             db.session.commit()
             print("committed")
             return redirect('/')
         else:
-            return redirect('/')     
+            return redirect('/')
+        
 
-electricity_request = {
-    "type": "electricity",
-    "electricity_unit": "kwh",
-    "electricity_value": "{power_usage}",
-    "country": "{country}",
-    "state": "{state}"
-    }
 
 @app.route('/delete/<int:id>')
 def erase(id): 
