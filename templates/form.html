@@ -18,8 +18,9 @@
                 <select id="activity" name="activity" size="4">
                     <option value="electricity">Used Electricity</option>
                     <option value="flight">Took a Flight</option>
-                    <option value="vehicle">Car Ride</option>
-                    <option value="spend-based">Bought Good or Service</option>
+                    <option value="transportation">Ground Transportation</option>
+                    <option value="accommodation">Travel Accommodation (Hotels, Bed n Breakfast, etc.)</option>
+                    <option value="restaurant">Restaurant/Eating Joint</option>
                 </select><br><br>
 
                 <label for="electricity_activity">What Specifically Used Electricity? </label>
@@ -44,6 +45,34 @@
                 <input id="departure" type="text" name="departure"><br><br>
                 <label for="arrival">What was your arrival airport (3-letter code)?</label>
                 <input id="arrival" type="text" name="arrival"><br><br>
+
+                <label for="transport_type">Type of Ground Transportation:</label>
+                <select id="transport_type" name="transport_type">
+                    <option value="car">Car/Passenger Vehicle</option>
+                    <option value="bus">Bus</option>
+                    <option value="intercity_train">Intercity Rail</option>
+                    <option value="transit_rail">Transit Rail (Subway, Tram, Commuter)</option>
+                    <option value="motorcycle">Motorcycle</option>
+                </select>
+                <label for="passengers_ground">Number of Passengers: </label>
+                <input id="passengers_ground" type="text" name="passengers_ground"><br><br>
+                <label for="distance_transport">Distance Traveled: </label>
+                <input id="distance_transport" type="text" name="distance_transport"><br><br>
+
+                <label for="rating">Hotel Rating (integer): </label>
+                <input id="rating" type="text" name="rating"><br><br>
+                <label for="nights">Number of Nights Stayed: </label>
+                <input id="nights" type="text" name="nights"><br><br>
+                
+                <label for="restaurant_type">Type of Restaurant: </label>
+                <select id="restaurant_type" name="restaurant_type">
+                    <option value="full_service">Full Service (sit down, cafe)</option>
+                    <option value="limited_service">Limited Service (fast food, fast casual)</option>
+                    <option value="other">Other (bar, snack joint, etc.)</option>
+                </select>
+                <label for="spent">Amount Spent (USD): </label>
+                <input id="spent" type="text" name="spent"><br><br>
+
                 <button id="submitForm" type="submit">Submit</button>
 
         </p>

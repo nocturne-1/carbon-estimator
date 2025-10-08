@@ -24,10 +24,20 @@ class Profile(db.Model):
     distance_flight = db.Column(db.Integer, unique=False, nullable=True)
     passengers_flight = db.Column(db.Integer, unique=False, nullable=True)
 
+    transport_type = db.Column(db.String(20), unique=False, nullable=True)
+    distance_transport = db.Column(db.Integer, unique=False, nullable=True)
+    passengers_transport = db.Column(db.Integer, unique=False, nullable=True)
+
+    rating = db.Column(db.Integer, unique=False, nullable=True)
+    nights = db.Column(db.Integer, unique=False, nullable=True)
+
+    restaurant_type = db.Column(db.String(20), unique=False, nullable=True)
+    spent = db.Column(db.Integer, unique=False, nullable=True)
+
     co2e = db.Column(db.String(20), unique=False, nullable=False)
 
     def __repr__(self):
-        return f"Name : {self.name}, Activity: {self.activity}, ElectricActivity: {self.elecactivity}, Duration = {self.duration}, Power Usage: {self.power_usage}, Flight Distance: {self.distance_flight}, Flight Passengers: {self.passengers_flight}, CO2e: {self.co2e}."
+        return f"Name : {self.name}, Activity: {self.activity}, Electric Activity: {self.elecactivity}, Duration = {self.duration}, Power Usage: {self.power_usage}, Flight Distance: {self.distance_flight}, Flight Passengers: {self.passengers_flight}, Transportation Type: {self.transport_type}, Distance Traveled: {self.distance_transport}, Transport Passengers: {self.passengers_transport}, Hotel Rating: {self.rating}, Nights Stayed: {self.nights}, Restaurant Type: {self.restaurant_type}, Amount Spent: {self.spent}, CO2e: {self.co2e}."
 
 def initialize_db():
     with app.app_context():
@@ -112,55 +122,192 @@ def api_request_flight(passengers, distance):
         "Authorization": f"Bearer {api_key}"
     }
     if distance < 300:
-       flight_request = {
-            "emission_factor": {
-                "activity_id": "passenger_flight-route_type_na-aircraft_type_na-distance_gt_2300mi-class_na-rf_excluded",
-		        "source": "EPA",
-		        "region": "US",
-		        "year": 2023,
-		        "source_lca_activity": "use_phase",
-		        "data_version": "^26"
-            },
-            "parameters": {
-                "passengers": passengers,
-                "distance": distance,
-                "distance_unit": "mi"
-            }
-        } 
+       activity_id = "passenger_flight-route_type_na-aircraft_type_na-distance_lt_300mi-class_na-rf_excluded" 
     elif 2300 > distance >= 300:
-        flight_request = {
+        activity_id = "passenger_flight-route_type_na-aircraft_type_na-distance_gt_300mi_lt_2300mi-class_na-rf_excluded"
+    else:
+        activity_id = "passenger_flight-route_type_na-aircraft_type_na-distance_gt_2300mi-class_na-rf_excluded"
+    flight_request = {
+        "emission_factor": {
+            "activity_id": activity_id,
+		    "source": "EPA",
+		    "region": "US",
+		    "year": 2023,
+		    "source_lca_activity": "use_phase",
+		    "data_version": "^26"
+        },
+        "parameters": {
+            "passengers": passengers,
+            "distance": distance,
+            "distance_unit": "mi"
+        }
+    } 
+    
+    try:
+        response = requests.post(url, headers=headers, json=flight_request)
+        data = response.json()
+        return f"{data['co2e']} {data['co2e_unit']}"
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+        return
+
+def api_request_transportation(type, distance, passengers):
+    api_key = "0ZB2BTF0F11737QNANS38E7JMW"
+    url = "https://api.climatiq.io/data/v1/estimate"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+    if type == "car":
+        transport_request = {
             "emission_factor": {
-                "activity_id": "passenger_flight-route_type_na-aircraft_type_na-distance_gt_300mi_lt_2300mi-class_na-rf_excluded",
-		        "source": "EPA",
+                "activity_id": "passenger_vehicle-vehicle_type_car-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
+                "source": "EPA",
 		        "region": "US",
-		        "year": 2023,
+		        "year": 2025,
 		        "source_lca_activity": "use_phase",
 		        "data_version": "^26"
             },
             "parameters": {
-                "passengers": passengers,
                 "distance": distance,
                 "distance_unit": "mi"
             }
         }
-    else:
-        flight_request = {
+    elif type == "bus":
+        transport_request = {
             "emission_factor": {
-		        "activity_id": "passenger_flight-route_type_na-aircraft_type_na-distance_lt_300mi-class_na-rf_excluded",
+		        "activity_id": "passenger_vehicle-vehicle_type_bus-fuel_source_na-distance_na-engine_size_na",
 		        "source": "EPA",
 		        "region": "US",
-		        "year": 2023,
+		        "year": 2024,
+		        "source_lca_activity": "use_phase",
+		        "data_version": "^26"
+	    },
+	    "parameters": {
+		    "passengers": passengers,
+		    "distance": distance,
+		    "distance_unit": "mi"
+	    }
+    }
+    elif type == "intercity_train":
+        transport_request = {
+            "emission_factor": {
+		        "activity_id": "passenger_train-route_type_intercity_other_routes-fuel_source_na",
+		        "source": "EPA",
+		        "region": "US",
+		        "year": 2025,
+		        "source_lca_activity": "use_phase",
+		        "data_version": "^26"
+	    },
+	    "parameters": {
+		    "passengers": passengers,
+		    "distance": distance,
+		    "distance_unit": "mi"
+	    }
+    }
+    elif type == "transit_rail":
+        transport_request = {
+            "emission_factor": {
+		        "activity_id": "passenger_train-route_type_urban-fuel_source_na",
+		        "source": "EPA",
+		        "region": "US",
+		        "year": 2025,
+		        "source_lca_activity": "use_phase",
+		        "data_version": "^26"
+	        },
+	        "parameters": {
+		        "passengers":passengers,
+		        "distance": distance,
+		        "distance_unit": "mi"
+	        }
+        }
+    elif type == "motorcycle":
+        transport_request = {
+            "emission_factor": {
+                "activity_id": "passenger_vehicle-vehicle_type_motorcycle-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
+                "source": "EPA",
+		        "region": "US",
+		        "year": 2025,
 		        "source_lca_activity": "use_phase",
 		        "data_version": "^26"
             },
-	        "parameters": {
-                "passengers": passengers,
+            "parameters": {
                 "distance": distance,
                 "distance_unit": "mi"
             }
         }
     try:
-        response = requests.post(url, headers=headers, json=flight_request)
+        response = requests.post(url, headers=headers, json=transport_request)
+        data = response.json()
+        return f"{data['co2e']} {data['co2e_unit']}"
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+        return
+
+def api_request_acommodation(rating, nights):
+    api_key = "0ZB2BTF0F11737QNANS38E7JMW"
+    url = "https://api.climatiq.io/data/v1/estimate"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+    if rating < 4:
+        activity_id = "accommodation-type_hotel_stay"
+    elif rating == 4:
+        activity_id = "accommodation-type_hotel_stay-rating_4_star"
+    elif rating == 5:
+        activity_id = "accommodation-type_hotel_stay-rating_5_star"
+    accommodation_request = {
+        "emission_factor": {
+		    "activity_id": activity_id,
+		    "source": "Greenview",
+		    "region": "US",
+		    "year": 2022,
+		    "source_lca_activity": "unknown",
+		    "data_version": "^26"
+	    },
+	    "parameters": {
+		    "number": nights
+	    }
+    }
+    try:
+        response = requests.post(url, headers=headers, json=accommodation_request)
+        data = response.json()
+        return f"{data['co2e']} {data['co2e_unit']}"
+    except requests.exceptions.RequestException as e:
+        print(f"Error making API request: {e}")
+        return
+    
+
+def api_request_restaurant(type, spent):
+    api_key = "0ZB2BTF0F11737QNANS38E7JMW"
+    url = "https://api.climatiq.io/data/v1/estimate"
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+    if type == "full_service":
+        activity_id = "consumer_services-type_full_service_restaurants"
+    elif type == "limited_service":
+        activity_id = "consumer_services-type_limited_service_restaurants"
+    else:
+        activity_id = "consumer_goods-type_snack_foods"
+    restaurant_request = {
+        "emission_factor": {
+		    "activity_id": activity_id,
+		    "source": "EPA",
+		    "region": "US",
+		    "year": 2022,
+		    "source_lca_activity": "cradle_to_shelf",
+		    "data_version": "^26"
+	    },
+	    "parameters": {
+		"money": spent,
+		"money_unit": "usd"
+	    }
+    }
+    try:
+        response = requests.post(url, headers=headers, json=restaurant_request)
         data = response.json()
         return f"{data['co2e']} {data['co2e_unit']}"
     except requests.exceptions.RequestException as e:
@@ -195,7 +342,35 @@ def formdata():
             print(f"Activity: '{activity}' (type: {type(activity)})")
             print(f"Distance: '{distance}' (type: {type(distance)})")
             print(f"CO2e: '{co2e_flight}' (type: {type(co2e_flight)})")
-            
+        elif activity == "transportation":
+            transport_type = request.form.get("transport_type")
+            distance_transport = int(request.form.get("distance_transport"))
+            passengers_transport = int(request.form.get("passengers_ground"))
+            co2e_transport = api_request_transportation(transport_type, distance_transport, passengers_transport)
+            print(f"User: '{user}' (type: {type(user)})")
+            print(f"Activity: '{activity}' (type: {type(activity)})")
+            print(f"Transportation Type: '{transport_type}' (type; {type(user)})")
+            print(f"Distance: '{distance_transport}' (type: {type(distance_transport)})")
+            print(f"CO2e: '{co2e_transport}' (type: {type(co2e_transport)})")
+        elif activity == "accommodation":
+            rating = int(request.form.get("rating"))
+            nights = int(request.form.get("nights"))
+            co2e_hotel = api_request_acommodation(rating, nights)
+            print(f"User: '{user}' (type: {type(user)})")
+            print(f"Activity: '{activity}' (type: {type(activity)})")
+            print(f"Rating: '{rating}' (type; {type(rating)})")
+            print(f"Nights: '{nights}' (type: {type(nights)})")
+            print(f"CO2e: '{co2e_hotel}' (type: {type(co2e_hotel)})")
+        elif activity == "restaurant":           
+            restaurant_type = request.form.get("restaurant_type")
+            spent = int(float(request.form.get("spent")))
+            co2e_restaurant = api_request_restaurant(restaurant_type, spent)
+            print(f"User: '{user}' (type: {type(user)})")
+            print(f"Activity: '{activity}' (type: {type(activity)})")
+            print(f"Restaurant Type: '{restaurant_type}' (type; {type(restaurant_type)})")
+            print(f"Amount Spent: '{spent}' (type: {type(spent)})")
+            print(f"CO2e: '{co2e_restaurant}' (type: {type(co2e_restaurant)})")
+
         if user != "" and activity == "electricity":
             p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, power_usage=power_usage, co2e=co2e_elec)
             db.session.add(p)
@@ -204,6 +379,24 @@ def formdata():
             return redirect('/')
         elif user != "" and activity == "flight":
             p = Profile(name=user, activity=activity, distance_flight=distance, passengers_flight=passengers, co2e=co2e_flight)
+            db.session.add(p)
+            db.session.commit()
+            print("committed")
+            return redirect('/')
+        elif user != "" and activity == "transportation":
+            p = Profile(name=user, activity=activity, transport_type=transport_type, distance_transport=distance_transport, passengers_transport=passengers_transport, co2e=co2e_transport)
+            db.session.add(p)
+            db.session.commit()
+            print("committed")
+            return redirect('/')
+        elif user != "" and activity == "accommodation":
+            p = Profile(name=user, activity=activity, rating=rating, nights=nights, co2e=co2e_hotel)
+            db.session.add(p)
+            db.session.commit()
+            print("commited")
+            return redirect('/')
+        elif user != "" and activity == "restaurant":
+            p = Profile(name=user, activity=activity, restaurant_type=restaurant_type, spent=spent, co2e=co2e_restaurant)
             db.session.add(p)
             db.session.commit()
             print("committed")

@@ -17,6 +17,13 @@
             <th>Power Usage</th>
             <th>Flight Distance</th>
             <th>Passengers</th>
+            <th>Transportation Type</th>
+            <th>Distance Traveled</th>
+            <th>Passengers (Transportation)</th>
+            <th>Hotel Rating</th>
+            <th>Nights Stayed</th>
+            <th>Restaurant Type</th>
+            <th>Amount Spent</th>
             <th>CO2e</th>
             <th>#</th>
          </thead>
@@ -31,6 +38,13 @@
                     <td>{{data.power_usage}}</td>
                     <td>{{data.distance_flight}}</td>
                     <td>{{data.passengers_flight}}</td>
+                    <td>{{data.transport_type}}</td>
+                    <td>{{data.distance_transport}}</td>
+                    <td>{{data.passengers_transport}}</td>
+                    <td>{{data.rating}}</td>
+                    <td>{{data.nights}}</td>
+                    <td>{{data.restaurant_type}}</td>
+                    <td>{{data.spent}}</td>
                     <td>{{data.co2e}}</td>
                     <td><a href="/delete/{{data.id}}" type="button">Delete</a></td>
                 </tr>
