@@ -48,6 +48,12 @@ def initialize_db():
 
 initialize_db()
 
+@app.route('/dashboard/<name>')
+def dashboard(name):
+    user_info = Profile.query.filter_by(name=name).all()
+    return render_template('dashboard.html', info=user_info)
+
+
 @app.route('/')
 def index():
     profiles = Profile.query.all()
@@ -376,31 +382,31 @@ def formdata():
             db.session.add(p)
             db.session.commit()
             print("committed")
-            return redirect('/')
+            return redirect('/dashboard/{}'.format(p.name))
         elif user != "" and activity == "flight":
             p = Profile(name=user, activity=activity, distance_flight=distance, passengers_flight=passengers, co2e=co2e_flight)
             db.session.add(p)
             db.session.commit()
             print("committed")
-            return redirect('/')
+            return redirect('/dashboard/{}'.format(p.name))
         elif user != "" and activity == "transportation":
             p = Profile(name=user, activity=activity, transport_type=transport_type, distance_transport=distance_transport, passengers_transport=passengers_transport, co2e=co2e_transport)
             db.session.add(p)
             db.session.commit()
             print("committed")
-            return redirect('/')
+            return redirect('/dashboard/{}'.format(p.name))
         elif user != "" and activity == "accommodation":
             p = Profile(name=user, activity=activity, rating=rating, nights=nights, co2e=co2e_hotel)
             db.session.add(p)
             db.session.commit()
             print("commited")
-            return redirect('/')
+            return redirect('/dashboard/{}'.format(p.name))
         elif user != "" and activity == "restaurant":
             p = Profile(name=user, activity=activity, restaurant_type=restaurant_type, spent=spent, co2e=co2e_restaurant)
             db.session.add(p)
             db.session.commit()
             print("committed")
-            return redirect('/')
+            return redirect('/dashboard/{}'.format(p.name))
         else:
             return redirect('/')
         
