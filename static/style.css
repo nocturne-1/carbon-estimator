@@ -1,0 +1,105 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+/* Question visibility - hidden at first */
+#elecactivity {
+    visibility: hidden;
+}
+
+#electricity_activity {
+    visibility: hidden;
+}
+
+#timing {
+    visibility: hidden;
+}
+
+#duration {
+    visibility: hidden;
+}
+
+#people_flight {
+    visibility: hidden;
+}
+
+#passengers {
+    visibility: hidden;
+}
+
+#leaving {
+    visibility: hidden;
+}
+
+#departure {
+    visibility: hidden;
+}
+
+#returning {
+    visibility: hidden;
+}
+
+#arrival {
+    visibility: hidden;
+}
+
+#moving_type {
+    visibility: hidden;
+}
+
+#transport_type {
+    visibility: hidden;
+}
+
+#people_ground {
+    visibility: hidden;
+}
+
+#passengers_ground {
+    visibility: hidden;
+}
+
+#distance_ground {
+    visibility: hidden;
+}
+
+#distance_transport {
+    visibility: hidden;
+}
+
+#stars {
+    visibility: hidden;
+}
+
+#rating {
+    visibility: hidden;
+}
+
+#days {
+    visibility: hidden;
+}
+
+#nights {
+    visibility: hidden;
+}
+
+#eating_type {
+    visibility: hidden;
+}
+
+#restaurant_type {
+    visibility: hidden;
+}
+
+#money {
+    visibility: hidden;
+}
+
+#spent {
+    visibility: hidden;
+}
+
+/* Class to make visible when needed */
+.make_visible {
+    visibility: visible;
+}

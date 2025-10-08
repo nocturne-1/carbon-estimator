@@ -7,6 +7,8 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
             <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+            <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
         <p>Form page</p>
@@ -23,7 +25,7 @@
                     <option value="restaurant">Restaurant/Eating Joint</option>
                 </select><br><br>
 
-                <label for="electricity_activity">What Specifically Used Electricity? </label>
+                <label id="elecactivity" for="electricity_activity">What Specifically Used Electricity? </label>
                 <select id="electricity_activity" name="electricity_activity">
                     <option value="heating">Portable Heater</option>
                     <option value="cooling">A/C (Window/Wall)</option>
@@ -36,17 +38,17 @@
                     <option value="electronic_laptop">Laptop</option>
                     <option value="electronic_monitor">Monitor</option>
                 </select><br><br>
-                <label for="duration">Duration(in hrs or, for refrigerator, days): </label>
+                <label id="timing" for="duration">Duration(in hrs or, for refrigerator, days): </label>
                 <input id="duration" type="text" name="duration"><br><br>
 
-                <label for="passengers">Number of Passengers: </label>
+                <label id="people_flight" for="passengers">Number of Passengers: </label>
                 <input id="passengers" type="text" name="passengers"><br><br>
-                <label for="departure">What was your departure airport (3-letter code)?</label>
+                <label id="leaving" for="departure">What was your departure airport (3-letter code)?</label>
                 <input id="departure" type="text" name="departure"><br><br>
-                <label for="arrival">What was your arrival airport (3-letter code)?</label>
+                <label id="returning" for="arrival">What was your arrival airport (3-letter code)?</label>
                 <input id="arrival" type="text" name="arrival"><br><br>
 
-                <label for="transport_type">Type of Ground Transportation:</label>
+                <label id="moving_type" for="transport_type">Type of Ground Transportation:</label>
                 <select id="transport_type" name="transport_type">
                     <option value="car">Car/Passenger Vehicle</option>
                     <option value="bus">Bus</option>
@@ -54,23 +56,23 @@
                     <option value="transit_rail">Transit Rail (Subway, Tram, Commuter)</option>
                     <option value="motorcycle">Motorcycle</option>
                 </select>
-                <label for="passengers_ground">Number of Passengers: </label>
+                <label id="people_ground" for="passengers_ground">Number of Passengers: </label>
                 <input id="passengers_ground" type="text" name="passengers_ground"><br><br>
-                <label for="distance_transport">Distance Traveled: </label>
+                <label id="distance_ground" for="distance_transport">Distance Traveled: </label>
                 <input id="distance_transport" type="text" name="distance_transport"><br><br>
 
-                <label for="rating">Hotel Rating (integer): </label>
+                <label id="stars" for="rating">Hotel Rating (integer): </label>
                 <input id="rating" type="text" name="rating"><br><br>
-                <label for="nights">Number of Nights Stayed: </label>
+                <label id="days" for="nights">Number of Nights Stayed: </label>
                 <input id="nights" type="text" name="nights"><br><br>
                 
-                <label for="restaurant_type">Type of Restaurant: </label>
+                <label id="eating_type" for="restaurant_type">Type of Restaurant: </label>
                 <select id="restaurant_type" name="restaurant_type">
                     <option value="full_service">Full Service (sit down, cafe)</option>
                     <option value="limited_service">Limited Service (fast food, fast casual)</option>
                     <option value="other">Other (bar, snack joint, etc.)</option>
                 </select>
-                <label for="spent">Amount Spent (USD): </label>
+                <label id="money" for="spent">Amount Spent (USD): </label>
                 <input id="spent" type="text" name="spent"><br><br>
 
                 <button id="submitForm" type="submit">Submit</button>
