@@ -60,32 +60,34 @@ const makeVisible = (label, element) => {
     element.classlist.add("make_visible");
 }
 
-if (activity.value == "electricity") {
-    for (let i = 0; i < electricity_question_list.length; i++) {
-        makeVisible(i[0], i[1]);
+activity.addEventListener("change", () => {
+    if (activity.value == "electricity") {
+        for (let i = 0; i < electricity_question_list.length; i++) {
+            makeVisible(i[0], i[1]);
+        }
     }
-}
 
-else if (activity.value == "flight") {
-    for (let i = 0; i < flight_question_list.length; i++) {
-        makeVisible(i[0], i[1]);
+    else if (activity.value == "flight") {
+        for (let i = 0; i < flight_question_list.length; i++) {
+            makeVisible(i[0], i[1]);
+        }
     }
-}
 
-else if (activity.value == "transportation") {
-    for (let i = 0; i < transportation_question_list.length; i++) {
-        makeVisible(i[0], i[1]);
+    else if (activity.value == "transportation") {
+        for (let i = 0; i < transportation_question_list.length; i++) {
+            makeVisible(i[0], i[1]);
+        }
     }
-}
 
 else if (activity.value == "accommodation") {
     for (let i = 0; i < accommodation_question_list.length; i++) {
         makeVisible(i[0], i[1]);
+        }
     }
-}
 
 else if (activity.value == "restaurant") {
     for (let i = 0; i < restaurant_question_list.length; i++) {
         makeVisible(i[0], i[1]);
     }
-}
+    }
+})
