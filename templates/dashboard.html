@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-   <head>
-      <title>User Dashboard</title>
-      <script id="chart-data" type="application/json">{{ tba | tojson }}</script>
-      <script type="text/javascript">
-         var chart_data = JSON.parse(document.getElementById('chart-data').textContent || '{}');
-         var chart_labels = Object.keys(chart_data);
-         var chart_values = Object.values(chart_data);
-      </script>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
-</script>
-   </head>
+{% extends "base.html" %}
+
+{% block content %}
    <body>
       <div class="top">
          <h3>Hello, {{name}}</h3>
@@ -26,7 +16,41 @@
       </div>
       <div class="chart-container" style="width: 50%; height: 50%;">
          <canvas id="co2eChart"></canvas>
-         <script>
+      <br>
+      </div>
+
+      <a href="/add_data">ADD</a>
+      <br>
+      <table id="data_table" class="table table-striped">
+         <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Activity</th>
+            <th>Electricity Details</th>
+            <th>Flight Details</th>
+            <th>TransportationDetails </th>
+            <th>Accommodation Details</th>
+            <th>Restaurant Details</th>
+            <th>CO2e</th>
+            <th>#</th>
+         </thead>
+         <tbody>
+         </tbody>
+   </table>
+{% endblock %}
+
+{% block scripts %}
+   <script id="chart-data" type="application/json">{{ tba | tojson }}</script>
+      <script type="text/javascript">
+         var chart_data = JSON.parse(document.getElementById('chart-data').textContent || '{}');
+         var chart_labels = Object.keys(chart_data);
+         var chart_values = Object.values(chart_data);
+         console.log(chart_values)
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+   </script>
+
+   <script>
             for (const[index, value] of chart_values.entries()) {
                chart_values[index] = parseInt(chart_values[index].split(' ')[0])
             }
@@ -54,51 +78,87 @@
             }
             });
             
-         </script>
-      <br>
-      <table>
-         <thead>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Activity</th>
-            <th>Electricity Activity</th>
-            <th>Duration</th>
-            <th>Power Usage</th>
-            <th>Flight Distance</th>
-            <th>Passengers</th>
-            <th>Transportation Type</th>
-            <th>Distance Traveled</th>
-            <th>Passengers (Transportation)</th>
-            <th>Hotel Rating</th>
-            <th>Nights Stayed</th>
-            <th>Restaurant Type</th>
-            <th>Amount Spent</th>
-            <th>CO2e</th>
-            <th>#</th>
-         </thead>
-         <tbody>
-            {% for data in info %}
-                <tr>
-                    <td>{{data.id}}</td>
-                    <td>{{data.name}}</td>
-                    <td>{{data.activity}}</td>
-                    <td>{{data.elecactivity}}</td>
-                    <td>{{data.duration}}</td>
-                    <td>{{data.power_usage}}</td>
-                    <td>{{data.distance_flight}}</td>
-                    <td>{{data.passengers_flight}}</td>
-                    <td>{{data.transport_type}}</td>
-                    <td>{{data.distance_transport}}</td>
-                    <td>{{data.passengers_transport}}</td>
-                    <td>{{data.rating}}</td>
-                    <td>{{data.nights}}</td>
-                    <td>{{data.restaurant_type}}</td>
-                    <td>{{data.spent}}</td>
-                    <td>{{data.co2e}}</td>
-                    <td><a href="/delete/{{data.id}}" type="button">Delete</a></td>
-                </tr>
-         </tbody>
-         {% endfor%}
-      </table>
-   </body>
-</html>
+   </script>
+
+   <script>
+      $(document).ready( function () {
+         $('#data_table').DataTable({
+            ajax: '/api/data',
+            columns: [
+               {data: 'id'},
+               {data: 'name'},
+               {data: 'activity'},
+               {
+                  data: null,
+                  render: function (data, type, row) {
+                     const act = row.elecactivity || "N/A"; 
+                     const dur = row.duration || "N/A";
+                     const pow = row.power_usage || "N/A";
+                     if (act === "N/A") {
+                        return "Did not use electricity!"
+                     }
+                     else {
+                        return `Used ${act} for ${dur} hrs, resulting in ${pow} kWh being used.`
+                     }
+                  }
+               },
+               {
+                  data: null,
+                  render: function (data, type, row) {
+                     const distfly = row.distance_flight || "N/A";
+                     const passfly = row.passengers_flight || "N/A"
+                     if (distfly === "N/A") {
+                        return "Didn't go on a flight!"
+                     }
+                     else {
+                        return `Flew on a ${distfly} mi flight with ${passfly} passengers.`
+                     }                     
+                  }
+               },
+               {
+                  data: null,
+                  render: function(data, type, row) {
+                     const typetrans = row.transport_type || "N/A";
+                     const disttrans = row.distance_transport || "N/A";
+                     const passtrans = row.passengers_transport || "N/A";
+                     if (typetrans === "N/A") {
+                        return "Did not use grand transport!"
+                     }
+                     else {
+                        return `Went on a ${typetrans} for ${disttrans} mi with ${passtrans} passengers.`
+                     }
+                  }
+               },
+               {
+                  data: null,
+                  render: function(data, type, row) {
+                     const rat = row.rating || "N/A";
+                     const nit = row.nights || "N/A";
+                     if (rat === "N/A") {
+                        return "Did not stay in accommodation!"
+                     }
+                     else {
+                        return `Stayed at a ${rat} hotel for ${nit} nights.`
+                     }
+                  }
+               },
+               {
+                  data: null,
+                  render: function(data, type, row) {
+                     const resttype = row.restaurant_type || "N/A";
+                     const spent = row.spent || "N/A";
+                     if (resttype === "N/A") {
+                        return "Did not dine at a restaurant!"
+                     }
+                     else {
+                        return `Dined at a ${resttype} restaurant and spent ${spent} USD.`
+                     }
+
+                  }
+               },
+               {data: 'co2e'}
+            ]
+         });
+      } );
+   </script>
+{% endblock %}
