@@ -37,6 +37,26 @@ class Profile(db.Model):
 
     co2e = db.Column(db.String(20), unique=False, nullable=False)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'activity': self.activity,
+            'elecactivity': self.elecactivity,
+            'duration': self.duration,
+            'power_usage': self.power_usage,
+            'distance_flight': self.distance_flight,
+            'passengers_flight': self.passengers_flight,
+            'transport_type': self.transport_type,
+            'distance_transport': self.distance_transport,
+            'passengers_transport': self.passengers_transport,
+            'rating': self.rating,
+            'nights': self.nights,
+            'restaurant_type': self.restaurant_type,
+            'spent': self.spent,
+            'co2e': self.co2e
+        }
+    
     def __repr__(self):
         return f"Name : {self.name}, Activity: {self.activity}, Electric Activity: {self.elecactivity}, Duration = {self.duration}, Power Usage: {self.power_usage}, Flight Distance: {self.distance_flight}, Flight Passengers: {self.passengers_flight}, Transportation Type: {self.transport_type}, Distance Traveled: {self.distance_transport}, Transport Passengers: {self.passengers_transport}, Hotel Rating: {self.rating}, Nights Stayed: {self.nights}, Restaurant Type: {self.restaurant_type}, Amount Spent: {self.spent}, CO2e: {self.co2e}."
 
@@ -62,12 +82,15 @@ def dashboard(name):
 
 @app.route('/')
 def index():
-    profiles = Profile.query.all()
-    return render_template('index.html', profile=profiles)
+    return render_template('index.html', title='DB Table')
 
 @app.route('/add_data')
 def add_data():
     return render_template("form.html")
+
+@app.route('/api/data')
+def data():
+    return {'data': [profile.to_dict() for profile in Profile.query]}
 
 electricity_data = {
     "heating": 1.5,
