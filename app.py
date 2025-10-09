@@ -1,6 +1,7 @@
 import sqlite3
 from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 import requests
 import json
@@ -51,7 +52,12 @@ initialize_db()
 @app.route('/dashboard/<name>')
 def dashboard(name):
     user_info = Profile.query.filter_by(name=name).all()
-    return render_template('dashboard.html', info=user_info)
+    total = db.session.query(func.sum(Profile.co2e)).filter_by(name=name).scalar()
+    total_by_activity = db.session.query(Profile.activity, func.sum(Profile.co2e)).filter_by(name=name).group_by(Profile.activity).all()
+    tba_dict = {activity: total for activity, total in total_by_activity}
+    activity_counts = db.session.query(Profile.activity, func.count(Profile.activity)).filter_by(name=name).group_by(Profile.activity).all()
+    counts_dict = {activity: count for activity, count in activity_counts}
+    return render_template('dashboard.html', name=name, total=total, counts=counts_dict, tba=tba_dict, info=user_info)
 
 
 @app.route('/')

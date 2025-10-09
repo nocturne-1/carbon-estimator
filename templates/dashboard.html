@@ -2,10 +2,59 @@
 <html>
    <head>
       <title>User Dashboard</title>
+      <script id="chart-data" type="application/json">{{ tba | tojson }}</script>
+      <script type="text/javascript">
+         var chart_data = JSON.parse(document.getElementById('chart-data').textContent || '{}');
+         var chart_labels = Object.keys(chart_data);
+         var chart_values = Object.values(chart_data);
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+</script>
    </head>
    <body>
-      <h3>User Dashboard</h3>
-      <a href="/add_data">ADD</a>
+      <div class="top">
+         <h3>Hello, {{name}}</h3>
+         <h3>Your total carbon emissions (CO2e) are {{total}} kg.</h3>
+      </div>
+      <a href="/add_data">Add a new activity</a>
+      <div class="breakdown">
+         <div class="electricity">You have used electricity {{counts.get("electricity", 0)}} times, totalling {{tba.get("electricity", 0)}} in CO2e.</div>
+         <div class="flight">You have taken {{counts.get("flight", 0)}} flights, totalling {{tba.get("flight", 0)}} in CO2e.</div>
+         <div class="transportation">You have used transportation {{counts.get("transportation", 0)}} times, totalling {{tba.get("transportation", 0)}}</div>
+         <div class="accommodation">You have stayed in accommodation {{counts.get("accommodation", 0)}} times, totalling {{tba.get("accommodation", 0)}} in CO2e.</div>
+         <div class="restaurant">You have dined in restaurants {{counts.get("restaurant", 0)}} times, totalling {{tba.get("restaurant", 0)}} in CO2e.</div>
+      </div>
+      <div class="chart-container" style="width: 50%; height: 50%;">
+         <canvas id="co2eChart"></canvas>
+         <script>
+            for (const[index, value] of chart_values.entries()) {
+               chart_values[index] = parseInt(chart_values[index].split(' ')[0])
+            }
+            
+            const ctx = document.getElementById('co2eChart');
+
+            new Chart(ctx, {
+               type: "bar",
+               data: {
+                  labels: chart_labels,
+                  datasets: [{
+                  backgroundColor: "green",
+                  data: chart_values,
+               }]
+            },
+            options: {
+               plugins: {
+                  legend: {display: false},
+                  title: {
+                     display: true,
+                     text: "Total Carbon Emissions (CO2e) by Activity Type",
+                     font: {size: 16}
+                  }     
+               }
+            }
+            });
+            
+         </script>
       <br>
       <table>
          <thead>
