@@ -3,27 +3,46 @@
     padding: 0px;
 } 
 
+@font-face {
+    font-family: 'De-Martega';
+    src: url("{{ url_for('static', filename='De-Martega.otf') }}") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+h2 {
+    font-family: 'De-Martega', serif;
+    font-size: 100px;
+}
+
+.card-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
 #card1 {
-    background-color: rgba(5, 31, 32, 0.2);
-    border-color:rgba(5, 31, 32, 1);
+    background-color: rgba(142, 182, 155, 0.2);
+    border-color: rgba(142, 182, 155, 1) 
 }
 
 #card2 {
-    background-color: rgba(11, 43, 38, 0.2);
-    border-color: rgba(11, 43, 38, 1);
+    background-color: rgba(118, 148, 76, 0.2);
+    border-color: rgba(118, 148, 76, 1)
 }
 
 #card3 {
-    background-color: rgba(22, 56, 50, 0.2);
-    border-color: rgba(22, 56, 50, 1)
+    background-color:  rgba(94, 140, 49, 0.2);
+    border-color: rgba(94, 140, 49, 1);
 }
 
 #card4 {
-    background-color: rgba(35, 83, 71, 0.2);
-    border-color: rgba(35, 83, 71, 1)
+    background-color: rgba(50, 100, 18, 0.2);
+    border-color: rgba(50, 100, 18, 1)
 }
 
 #card5 {
-    background-color: rgba(142, 182, 155, 0.2);
-    border-color: rgba(142, 182, 155, 1);
+    background-color: rgba(2, 80, 35, 0.2);
+    border-color:rgba(2, 80, 35, 1);
 }

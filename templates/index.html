@@ -5,13 +5,12 @@
 {% endblock %}
 
 {% block content %}
-   <link rel="stylesheet" src="">
    <div class="row">
       <div class="col-12">
-         <div class="card bg-dark text-white text-center">
+         <div class="card bg-dark text-white" height="300px">
             <img class="card-img" src="{{ url_for('static', filename='download.jpg') }}" alt="Green Background Img">
-            <div class="card-img-overlay">
-               <h2 class="card-text">CARBON ESTIMATOR</h5>
+            <div class="card-img-overlay d-flex align-items-center justify-content-center">
+               <h2 class="card-text">CARBON ESTIMATOR</h2>
             </div>
          </div>
       </div>
@@ -19,7 +18,7 @@
    <br><br>
    <div class="row">
       <div class="col-4">
-         <div id="card1" class="card bg-dark text-white" width="100%">
+         <div id="card1" class="card" width="100%">
             <div class="card-body">
                <h5 class="card-title">Household Energy</h5>
                <h6 class="card-subtitle mb-2 text-muted">Source: EPA</h6>
@@ -28,7 +27,7 @@
          </div>
       </div>
       <div class="col-4">
-         <div id="card2" class="card bg-dark text-white" width="100%">
+         <div id="card2" class="card" width="100%">
             <div class="card-body">
                <h5 class="card-title">Transportation</h5>
                <h6 class="card-subtitle mb-2 text-muted">Source: IPCC</h6>
@@ -37,7 +36,7 @@
          </div>
       </div>
       <div class="col-4">
-         <div id="card3" class="card bg-dark text-white" width="100%">
+         <div id="card3" class="card" width="100%">
             <div class="card-body">
                <h5 class="card-title">Aviation</h5>
                <h6 class="card-subtitle mb-2 text-muted">Source: IEA</h6>
@@ -49,7 +48,7 @@
    <br><br>
    <div class="row">
       <div class="col-6">
-         <div id="card4" class="card bg-dark text-white" width="100%">
+         <div id="card4" class="card" width="100%">
             <div class="card-body">
                <h5 class="card-title">Accommodation</h5>
                <h6 class="card-subtitle mb-2 text-muted">Source: WSHA, Circular Ecology, Climatiq</h6>
