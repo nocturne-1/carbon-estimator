@@ -20,7 +20,7 @@
                     $("#activity").change(function() {
                         $(".changing").hide();
                         var selected = $(this).val();
-                        if (selected == "electricity") {
+                        if (selected == "Electricity") {
                             $(".show2").hide();
                             $(".show3").hide();
                             $(".show4").hide();
@@ -31,7 +31,7 @@
                             $("#duration").show();
                             $(".show1").show();
                         }
-                        else if (selected == "flight") {
+                        else if (selected == "Flight") {
                             $(".show1").hide();
                             $(".show3").hide();
                             $(".show4").hide();
@@ -44,7 +44,7 @@
                             $("#arrival").show();
                             $(".show2").show();
                         }
-                        else if (selected == "transportation") {
+                        else if (selected == "Transportation") {
                             $(".show1").hide();
                             $(".show2").hide();
                             $(".show4").hide();
@@ -57,7 +57,7 @@
                             $("#distance_transport").show();
                             $(".show3").show();
                         }
-                        else if (selected == "accommodation") {
+                        else if (selected == "Accommodation") {
                             $(".show1").hide();
                             $(".show2").hide();
                             $(".show3").hide();
@@ -68,7 +68,7 @@
                             $("#nights").show();
                             $(".show4").show();
                         }
-                        else if (selected == "restaurant") {
+                        else if (selected == "Restaurant") {
                             $(".show1").hide();
                             $(".show2").hide();
                             $(".show3").hide();
@@ -91,27 +91,27 @@
                 <input type="text" id="name" name="user_name" /><br class="show"><br class="show">
                 <label for="activity">Activity (Choose One): </label>
                 <select id="activity" name="activity" size="4">
-                    <option value="electricity">Used Electricity</option>
-                    <option value="flight">Took a Flight</option>
-                    <option value="transportation">Ground Transportation</option>
-                    <option value="accommodation">Travel Accommodation (Hotels, Bed n Breakfast, etc.)</option>
-                    <option value="restaurant">Restaurant/Eating Joint</option>
+                    <option value="Electricity">Used Electricity</option>
+                    <option value="Flight">Took a Flight</option>
+                    <option value="Transportation">Ground Transportation</option>
+                    <option value="Accommodation">Travel Accommodation (Hotels, Bed n Breakfast, etc.)</option>
+                    <option value="Restaurant">Restaurant/Eating Joint</option>
                 </select><br><br>
 
                 <label class="changing" id="electricity_activity_label" for="electricity_activity">What Specifically Used Electricity? </label>
                 <select class="changing" id="electricity_activity" name="electricity_activity">
-                    <option value="heating">Portable Heater</option>
-                    <option value="cooling">A/C (Window/Wall)</option>
-                    <option value="cooling_fan">Ceiling Fan</option>
-                    <option value="kitchen_appliances_oven">Oven</option>
-                    <option value="kitchen_appliances_dishwasher">Dishwasher</option>
-                    <option value="refrigeration">Refrigerator</option>
-                    <option value="electronic_tv">TV</option>
-                    <option value="electronic_desktop">Desktop PC</option>
-                    <option value="electronic_laptop">Laptop</option>
-                    <option value="electronic_monitor">Monitor</option>
+                    <option value="heater">Portable Heater</option>
+                    <option value="A/C">A/C (Window/Wall)</option>
+                    <option value="fan">Ceiling Fan</option>
+                    <option value="oven">Oven</option>
+                    <option value="dishwasher">Dishwasher</option>
+                    <option value="refrigerator">Refrigerator</option>
+                    <option value="TV">TV</option>
+                    <option value="desktop">Desktop PC</option>
+                    <option value="laptop">Laptop</option>
+                    <option value="monitor">Monitor</option>
                 </select><br class="show1"><br class="show1">
-                <label class="changing" id="duration_label" for="duration">Duration(in hrs or, for refrigerator, days): </label>
+                <label class="changing" id="duration_label" for="duration">Duration (in hrs or, for refrigerator, days): </label>
                 <input class="changing" id="duration" type="text" name="duration"><br class="show1"><br class="show1">
 
                 <label class="changing" id="passengers_label" for="passengers">Number of Passengers: </label>
@@ -131,7 +131,7 @@
                 </select>
                 <label class="changing" id="passengers_ground_label" for="passengers_ground">Number of Passengers: </label>
                 <input class="changing" id="passengers_ground" type="text" name="passengers_ground"><br class="show3"><br class="show3">
-                <label class="changing" id="distance_transport_label" for="distance_transport">Distance Traveled: </label>
+                <label class="changing" id="distance_transport_label" for="distance_transport">Distance Traveled (mi): </label>
                 <input class="changing" id="distance_transport" type="text" name="distance_transport"><br class="show3"><br class="show3">
 
                 <label class="changing" id="rating_label" for="rating">Hotel Rating (integer): </label>

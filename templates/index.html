@@ -10,7 +10,7 @@
          <th>Activity</th>
          <th>Electricity Details</th>
          <th>Flight Details</th>
-         <th>TransportationDetails </th>
+         <th>Transportation Details </th>
          <th>Accommodation Details</th>
          <th>Restaurant Details</th>
          <th>CO2e</th>
@@ -98,7 +98,12 @@
 
                   }
                },
-               {data: 'co2e'}
+               {
+                  data: null,
+                  render: function(data, type, row) {
+                     return `${co2e} kg`
+                  }
+               }
             ]
          });
       } );

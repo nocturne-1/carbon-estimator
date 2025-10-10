@@ -73,8 +73,9 @@ initialize_db()
 def dashboard(name):
     user_info = Profile.query.filter_by(name=name).all()
     total = db.session.query(func.sum(Profile.co2e)).filter_by(name=name).scalar()
+    total = round(total, 2) if total else 0
     total_by_activity = db.session.query(Profile.activity, func.sum(Profile.co2e)).filter_by(name=name).group_by(Profile.activity).all()
-    tba_dict = {activity: total for activity, total in total_by_activity}
+    tba_dict = {activity: round(total, 2) for activity, total in total_by_activity}
     activity_counts = db.session.query(Profile.activity, func.count(Profile.activity)).filter_by(name=name).group_by(Profile.activity).all()
     counts_dict = {activity: count for activity, count in activity_counts}
     return render_template('dashboard.html', name=name, total=total, counts=counts_dict, tba=tba_dict, info=user_info)
@@ -93,16 +94,16 @@ def data():
     return {'data': [profile.to_dict() for profile in Profile.query]}
 
 electricity_data = {
-    "heating": 1.5,
-    "cooling": 1.2,
-    "cooling_fan": 0.075,
-    "kitchen_appliances_oven": 2.3,
-    "kitchen_appliances_dishwasher": 2,
-    "refrigeration": 50,
-    "electronic_tv": 0.03,
-    "electronic_desktop": 0.15,
-    "electronic_laptop": 0.05,
-    "electronic_monitor": 0.08
+    "heater": 1.5,
+    "A/C": 1.2,
+    "fan": 0.075,
+    "oven": 2.3,
+    "dishwasher": 2,
+    "refrigerator": 50,
+    "TV": 0.03,
+    "desktop": 0.15,
+    "laptop": 0.05,
+    "monitor": 0.08
 }  
 
 def api_request_elec(power_usage):
@@ -124,7 +125,7 @@ def api_request_elec(power_usage):
     try:
         response = requests.post(url, headers=headers, json=electricity_request)
         data = response.json()
-        return f"{data['co2e']} {data['co2e_unit']}"
+        return round(float(data['co2e']), 2)
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return
@@ -181,7 +182,7 @@ def api_request_flight(passengers, distance):
     try:
         response = requests.post(url, headers=headers, json=flight_request)
         data = response.json()
-        return f"{data['co2e']} {data['co2e_unit']}"
+        return round(float(data['co2e']), 2)
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return
@@ -274,7 +275,7 @@ def api_request_transportation(type, distance, passengers):
     try:
         response = requests.post(url, headers=headers, json=transport_request)
         data = response.json()
-        return f"{data['co2e']} {data['co2e_unit']}"
+        return round(float(data['co2e']), 2)
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return
@@ -308,7 +309,7 @@ def api_request_acommodation(rating, nights):
     try:
         response = requests.post(url, headers=headers, json=accommodation_request)
         data = response.json()
-        return f"{data['co2e']} {data['co2e_unit']}"
+        return round(float(data['co2e']), 2)
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return
@@ -344,7 +345,7 @@ def api_request_restaurant(type, spent):
     try:
         response = requests.post(url, headers=headers, json=restaurant_request)
         data = response.json()
-        return f"{data['co2e']} {data['co2e_unit']}"
+        return round(float(data['co2e']), 2)
     except requests.exceptions.RequestException as e:
         print(f"Error making API request: {e}")
         return
@@ -356,7 +357,7 @@ def formdata():
     if request.method == "POST":
         user = request.form.get("user_name")
         activity = request.form.get("activity")
-        if activity == "electricity":
+        if activity == "Electricity":
             elecactivity = request.form.get("electricity_activity")
             duration = request.form.get("duration")
             power_usage = int(int(duration) * electricity_data.get(elecactivity, 0))
@@ -367,7 +368,7 @@ def formdata():
             print(f"Duration: '{duration}' (type: {type(duration)})")
             print(f"Power Usage: '{power_usage}' (type: {type(power_usage)})")
             print(f"CO2e: '{co2e_elec}' (type: {type(co2e_elec)})")
-        elif activity == "flight":
+        elif activity == "Flight":
             departure = request.form.get("departure")
             arrival = request.form.get("arrival")
             distance = int(flight_distance(departure, arrival))
@@ -377,7 +378,7 @@ def formdata():
             print(f"Activity: '{activity}' (type: {type(activity)})")
             print(f"Distance: '{distance}' (type: {type(distance)})")
             print(f"CO2e: '{co2e_flight}' (type: {type(co2e_flight)})")
-        elif activity == "transportation":
+        elif activity == "Transportation":
             transport_type = request.form.get("transport_type")
             distance_transport = int(request.form.get("distance_transport"))
             passengers_transport = int(request.form.get("passengers_ground"))
@@ -387,7 +388,7 @@ def formdata():
             print(f"Transportation Type: '{transport_type}' (type; {type(user)})")
             print(f"Distance: '{distance_transport}' (type: {type(distance_transport)})")
             print(f"CO2e: '{co2e_transport}' (type: {type(co2e_transport)})")
-        elif activity == "accommodation":
+        elif activity == "Accommodation":
             rating = int(request.form.get("rating"))
             nights = int(request.form.get("nights"))
             co2e_hotel = api_request_acommodation(rating, nights)
@@ -396,7 +397,7 @@ def formdata():
             print(f"Rating: '{rating}' (type; {type(rating)})")
             print(f"Nights: '{nights}' (type: {type(nights)})")
             print(f"CO2e: '{co2e_hotel}' (type: {type(co2e_hotel)})")
-        elif activity == "restaurant":           
+        elif activity == "Restaurant":           
             restaurant_type = request.form.get("restaurant_type")
             spent = int(float(request.form.get("spent")))
             co2e_restaurant = api_request_restaurant(restaurant_type, spent)
@@ -406,31 +407,31 @@ def formdata():
             print(f"Amount Spent: '{spent}' (type: {type(spent)})")
             print(f"CO2e: '{co2e_restaurant}' (type: {type(co2e_restaurant)})")
 
-        if user != "" and activity == "electricity":
+        if user != "" and activity == "Electricity":
             p = Profile(name=user, activity=activity, elecactivity=elecactivity, duration=duration, power_usage=power_usage, co2e=co2e_elec)
             db.session.add(p)
             db.session.commit()
             print("committed")
             return redirect('/dashboard/{}'.format(p.name))
-        elif user != "" and activity == "flight":
+        elif user != "" and activity == "Flight":
             p = Profile(name=user, activity=activity, distance_flight=distance, passengers_flight=passengers, co2e=co2e_flight)
             db.session.add(p)
             db.session.commit()
             print("committed")
             return redirect('/dashboard/{}'.format(p.name))
-        elif user != "" and activity == "transportation":
+        elif user != "" and activity == "Transportation":
             p = Profile(name=user, activity=activity, transport_type=transport_type, distance_transport=distance_transport, passengers_transport=passengers_transport, co2e=co2e_transport)
             db.session.add(p)
             db.session.commit()
             print("committed")
             return redirect('/dashboard/{}'.format(p.name))
-        elif user != "" and activity == "accommodation":
+        elif user != "" and activity == "Accommodation":
             p = Profile(name=user, activity=activity, rating=rating, nights=nights, co2e=co2e_hotel)
             db.session.add(p)
             db.session.commit()
             print("commited")
             return redirect('/dashboard/{}'.format(p.name))
-        elif user != "" and activity == "restaurant":
+        elif user != "" and activity == "Restaurant":
             p = Profile(name=user, activity=activity, restaurant_type=restaurant_type, spent=spent, co2e=co2e_restaurant)
             db.session.add(p)
             db.session.commit()

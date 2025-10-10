@@ -2,41 +2,107 @@
 
 {% block content %}
    <body>
-      <div class="top">
-         <h3>Hello, {{name}}</h3>
-         <h3>Your total carbon emissions (CO2e) are {{total}} kg.</h3>
+      <main class="mt-5-pt-3">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12 fw-bold fs-2">Hello, {{name}}. Your total carbon emissions (CO2e) are {{total}} kg.</div>
+            </div>
+         </div>
+      </main>
+      <br><br>
+      <div class="row">
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Electricity</h5>
+                  <p class="card-text">You have used electricity {{counts.get("electricity", 0)}} times, totaling {{tba.get("electricity", 0)}} kg in CO2e.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Transportation</h5>
+                  <p class="card-text">You have used transportation {{counts.get("transportation", 0)}} times, totaling {{tba.get("transportation", 0)}} kg in CO2e.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Flight</h5>
+                  <p class="card-text">You have taken {{counts.get("flight", 0)}} flights, totaling {{tba.get("flight", 0)}} kg in CO2e.</p>
+               </div>
+            </div>
+         </div>
       </div>
-      <a href="/add_data">Add a new activity</a>
-      <div class="breakdown">
-         <div class="electricity">You have used electricity {{counts.get("electricity", 0)}} times, totalling {{tba.get("electricity", 0)}} in CO2e.</div>
-         <div class="flight">You have taken {{counts.get("flight", 0)}} flights, totalling {{tba.get("flight", 0)}} in CO2e.</div>
-         <div class="transportation">You have used transportation {{counts.get("transportation", 0)}} times, totalling {{tba.get("transportation", 0)}}</div>
-         <div class="accommodation">You have stayed in accommodation {{counts.get("accommodation", 0)}} times, totalling {{tba.get("accommodation", 0)}} in CO2e.</div>
-         <div class="restaurant">You have dined in restaurants {{counts.get("restaurant", 0)}} times, totalling {{tba.get("restaurant", 0)}} in CO2e.</div>
+      <br><br>
+      <div class="row">
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Accommodation</h5>
+                  <p class="card-text">You have stayed in accommodation {{counts.get("accommodation", 0)}} times, totaling {{tba.get("accommodation", 0)}} kg in CO2e.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Restaurant</h5>
+                  <p class="card-text">You have dined in restaurants {{counts.get("restaurant", 0)}} times, totaling {{tba.get("restaurant", 0)}} kg in CO2e.</p>
+               </div>
+            </div>
+         </div>
+         <div class="col-sm-4">
+            <div class="card">
+               <div class="card-body">
+                  <h5 class="card-title">Add</h5>
+                  <p class="card-text">Add a new activity!</p>
+                  <a href="/add_data" class="card-link">Add here</a>
+               </div>
+            </div>
+         </div>
       </div>
-      <div class="chart-container" style="width: 50%; height: 50%;">
-         <canvas id="co2eChart"></canvas>
-      <br>
+      <br><br>
+      <div class="row">
+         <div class="col-12">
+            <div class="card">
+               <div class="card-header">Total Carbon Emissions (CO2e) by Activity Type</div>
+               <div class="card-body">
+                  <canvas class="chart" height="300px"></canvas>
+               </div>
+            </div>
+         </div>
+      </div>
+      <br><br>
+      <div class="row">
+         <div class="col-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="table-responsive">
+                     <table id="data_table" class="table table-striped">
+                        <thead>
+                           <th>Id</th>
+                           <th>Name</th>
+                           <th>Activity</th>
+                           <th>Electricity Details</th>
+                           <th>Flight Details</th>
+                           <th>Transportation Details </th>
+                           <th>Accommodation Details</th>
+                           <th>Restaurant Details</th>
+                           <th>CO2e</th>
+                           <th>#</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
 
-      <a href="/add_data">ADD</a>
-      <br>
-      <table id="data_table" class="table table-striped">
-         <thead>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Activity</th>
-            <th>Electricity Details</th>
-            <th>Flight Details</th>
-            <th>TransportationDetails </th>
-            <th>Accommodation Details</th>
-            <th>Restaurant Details</th>
-            <th>CO2e</th>
-            <th>#</th>
-         </thead>
-         <tbody>
-         </tbody>
-   </table>
 {% endblock %}
 
 {% block scripts %}
@@ -45,39 +111,48 @@
          var chart_data = JSON.parse(document.getElementById('chart-data').textContent || '{}');
          var chart_labels = Object.keys(chart_data);
          var chart_values = Object.values(chart_data);
-         console.log(chart_values)
+         for (const[index, value] of chart_values.entries()) {
+               chart_values[index] = parseInt(chart_values[index].split(' ')[0])
+         }
       </script>
-      <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
    </script>
 
-   <script>
-            for (const[index, value] of chart_values.entries()) {
-               chart_values[index] = parseInt(chart_values[index].split(' ')[0])
-            }
-            
-            const ctx = document.getElementById('co2eChart');
+   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
 
-            new Chart(ctx, {
-               type: "bar",
+   <script>
+      const charts = document.querySelectorAll(".chart")
+      charts.forEach(function (chart) {
+         const ctx = chart.getContext("2d");
+         var co2eChart = new Chart(ctx, {
+            type: "bar",
                data: {
                   labels: chart_labels,
                   datasets: [{
-                  backgroundColor: "green",
-                  data: chart_values,
+                     data: chart_values,
+                     backgroundColor: ["rgba(255, 99, 132, 0.2)",
+                     "rgba(54, 162, 235, 0.2)",
+                     "rgba(255, 206, 86, 0.2)",
+                     "rgba(75, 192, 192, 0.2)"],
+                     borderColor: [
+                     "rgba(255, 99, 132, 1)",
+                     "rgba(54, 162, 235, 1)",
+                     "rgba(255, 206, 86, 1)",
+                     "rgba(75, 192, 192, 1)"],
+                     borderWidth: 1
                }]
             },
             options: {
-               plugins: {
-                  legend: {display: false},
-                  title: {
-                     display: true,
-                     text: "Total Carbon Emissions (CO2e) by Activity Type",
-                     font: {size: 16}
-                  }     
+               responsive: true,
+               maintainAspectRatio: false,
+               scales: {
+                  y: {
+                     beginAtZero: true
+                  }
                }
             }
-            });
-            
+         })
+
+      })            
    </script>
 
    <script>
@@ -122,7 +197,7 @@
                      const disttrans = row.distance_transport || "N/A";
                      const passtrans = row.passengers_transport || "N/A";
                      if (typetrans === "N/A") {
-                        return "Did not use grand transport!"
+                        return "Did not use ground transport!"
                      }
                      else {
                         return `Went on a ${typetrans} for ${disttrans} mi with ${passtrans} passengers.`
@@ -156,7 +231,11 @@
 
                   }
                },
-               {data: 'co2e'}
+               {
+                  data: null,
+                  render: function(data, type, row) {
+                     return `${co2e} kg`
+                  }}
             ]
          });
       } );
