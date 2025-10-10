@@ -1,8 +1,29 @@
 * {
     margin: 0px;
     padding: 0px;
+} 
+
+#card1 {
+    background-color: rgba(5, 31, 32, 0.2);
+    border-color:rgba(5, 31, 32, 1);
 }
 
-.changing {
-    display: none;
+#card2 {
+    background-color: rgba(11, 43, 38, 0.2);
+    border-color: rgba(11, 43, 38, 1);
+}
+
+#card3 {
+    background-color: rgba(22, 56, 50, 0.2);
+    border-color: rgba(22, 56, 50, 1)
+}
+
+#card4 {
+    background-color: rgba(35, 83, 71, 0.2);
+    border-color: rgba(35, 83, 71, 1)
+}
+
+#card5 {
+    background-color: rgba(142, 182, 155, 0.2);
+    border-color: rgba(142, 182, 155, 1);
 }

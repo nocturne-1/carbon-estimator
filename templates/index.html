@@ -1,8 +1,84 @@
 {% extends "base.html" %}
 
+{% block head_extra %}
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
 {% block content %}
-   <a href="/add_data">ADD</a>
-   <br>
+   <link rel="stylesheet" src="">
+   <div class="row">
+      <div class="col-12">
+         <div class="card bg-dark text-white text-center">
+            <img class="card-img" src="{{ url_for('static', filname='download.jpg') }}" alt="Green Background Img">
+            <div class="card-img-overlay">
+               <h2 class="card-text">CARBON ESTIMATOR</h5>
+            </div>
+         </div>
+      </div>
+   </div>
+   <br><br>
+   <div class="row">
+      <div class="col-4">
+         <div id="card1" class="card bg-dark text-white" width="100%">
+            <div class="card-body">
+               <h5 class="card-title">Household Energy</h5>
+               <h6 class="card-subtitle mb-2 text-muted">Source: EPA</h6>
+               <p class="card-text">An average US household generates around 4.8 billion metric tons of CO2 per year from electricity use.</p>
+            </div>
+         </div>
+      </div>
+      <div class="col-4">
+         <div id="card2" class="card bg-dark text-white" width="100%">
+            <div class="card-body">
+               <h5 class="card-title">Transportation</h5>
+               <h6 class="card-subtitle mb-2 text-muted">Source: IPCC</h6>
+               <p class="card-text">Data from 2019 shows that all forms of ground transportation generate around 6.2 billion metric tons of CO2.</p>
+            </div>
+         </div>
+      </div>
+      <div class="col-4">
+         <div id="card3" class="card bg-dark text-white" width="100%">
+            <div class="card-body">
+               <h5 class="card-title">Aviation</h5>
+               <h6 class="card-subtitle mb-2 text-muted">Source: IEA</h6>
+               <p class="card-text">In 2023, air travel generated around 2.5% of all global energy-related CO2 emissions, around 882 to 950 million metric tons.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <br><br>
+   <div class="row">
+      <div class="col-6">
+         <div id="card4" class="card bg-dark text-white" width="100%">
+            <div class="card-body">
+               <h5 class="card-title">Accommodation</h5>
+               <h6 class="card-subtitle mb-2 text-muted">Source: WSHA, Circular Ecology, Climatiq</h6>
+               <p class="card-text">On average, a hotel room generates 9.2 metric tons of CO2 per year, and around 9-10.4 kg of CO2 are released per night at US or UK hotels.</p>
+            </div>
+         </div>
+      </div>
+      <div class="col-6">
+         <div id="card5" class="card" width="100%">
+            <div class="card-body">
+               <h5 class="card-title">Restaurants</h5>
+               <h6 class="card-subtitle mb-2 text-muted">Source: JHU, USDA</h6>
+               <p class="card-text">An average restaurant generates around 427.6 metric tons of CO2 per year, not accounting for food waste, which generates around 170 metric tons of CO2 yearly.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <br><br>
+   <div class="row">
+      <div class="col-12">
+         <div class="card text-center" width="100%">
+            <div class="card-body">
+               <h3 class="card-text">Sustainability starts with you.</h2>
+               <a href="/add_data" class="card-link">Start tracking your footprint now.</a>
+            </div>
+         </div>
+      </div>
+   </div>
+   <br><br>
    <table id="data_table" class="table table-striped">
       <thead>
          <th>Id</th>
