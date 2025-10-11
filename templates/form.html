@@ -1,155 +1,205 @@
-<!DOCTYPE html>
-<html lang="en-US">
-    <head>
-        <meta charset="utf-8">
-        <title>Carbon Estimate Form</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-            <script src="{{ url_for('static', filename='app.js') }}"></script>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+{% extends "base.html" %}
 
-            <script>
-                $(document).ready(function() {
-                    $(".show1").hide();
+{% block head_extra %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $(".show1").hide();
+            $(".show2").hide();
+            $(".show3").hide();
+            $(".show4").hide();
+            $(".show5").hide();
+            $(".changing").hide();
+            $("#activity").change(function() {
+                $(".changing").hide();
+                var selected = $(this).val();
+                if (selected == "Electricity") {
                     $(".show2").hide();
                     $(".show3").hide();
                     $(".show4").hide();
                     $(".show5").hide();
-                    $("#activity").change(function() {
-                        $(".changing").hide();
-                        var selected = $(this).val();
-                        if (selected == "Electricity") {
-                            $(".show2").hide();
-                            $(".show3").hide();
-                            $(".show4").hide();
-                            $(".show5").hide();
-                            $("#electricity_activity_label").show();
-                            $("#electricity_activity").show();
-                            $("#duration_label").show();
-                            $("#duration").show();
-                            $(".show1").show();
-                        }
-                        else if (selected == "Flight") {
-                            $(".show1").hide();
-                            $(".show3").hide();
-                            $(".show4").hide();
-                            $(".show5").hide();
-                            $("#passengers_label").show();
-                            $("#passengers").show();
-                            $("#departure_label").show();
-                            $("#departure").show();
-                            $("#arrival_label").show();
-                            $("#arrival").show();
-                            $(".show2").show();
-                        }
-                        else if (selected == "Transportation") {
-                            $(".show1").hide();
-                            $(".show2").hide();
-                            $(".show4").hide();
-                            $(".show5").hide();
-                            $("#transport_type_label").show();
-                            $("#transport_type").show();
-                            $("#passengers_ground_label").show();
-                            $("#passengers_ground").show();
-                            $("#distance_transport_label").show();
-                            $("#distance_transport").show();
-                            $(".show3").show();
-                        }
-                        else if (selected == "Accommodation") {
-                            $(".show1").hide();
-                            $(".show2").hide();
-                            $(".show3").hide();
-                            $(".show5").hide();
-                            $("#rating_label").show();
-                            $("#rating").show();
-                            $("#nights_label").show();
-                            $("#nights").show();
-                            $(".show4").show();
-                        }
-                        else if (selected == "Restaurant") {
-                            $(".show1").hide();
-                            $(".show2").hide();
-                            $(".show3").hide();
-                            $(".show4").hide();
-                            $("#restaurant_type_label").show();
-                            $("#restaurant_type").show();
-                            $("#spent_label").show();
-                            $("#spent").show();
-                            $(".show5").show();
-                        }
-                    })
-                })
-            </script>
-    </head>
-    <body>
-        <p>Form page</p>
-        <form action="{{ url_for('formdata') }}" method="post">
-            <p>
-                <label>Username/Nickname:</label>
-                <input type="text" id="name" name="user_name" /><br class="show"><br class="show">
-                <label for="activity">Activity (Choose One): </label>
-                <select id="activity" name="activity" size="4">
-                    <option value="Electricity">Used Electricity</option>
-                    <option value="Flight">Took a Flight</option>
-                    <option value="Transportation">Ground Transportation</option>
-                    <option value="Accommodation">Travel Accommodation (Hotels, Bed n Breakfast, etc.)</option>
-                    <option value="Restaurant">Restaurant/Eating Joint</option>
-                </select><br><br>
+                    $("#electricity_activity_label").show();
+                    $("#electricity_activity").show();
+                    $("#duration_label").show();
+                    $("#duration").show();
+                    $(".show1").show();
+                }
+                else if (selected == "Flight") {
+                    $(".show1").hide();
+                    $(".show3").hide();
+                    $(".show4").hide();
+                    $(".show5").hide();
+                    $("#passengers_label").show();
+                    $("#passengers").show();
+                    $("#departure_label").show();
+                    $("#departure").show();
+                    $("#arrival_label").show();
+                    $("#arrival").show();
+                    $(".show2").show();
+                }
+                else if (selected == "Transportation") {
+                    $(".show1").hide();
+                    $(".show2").hide();
+                    $(".show4").hide();
+                    $(".show5").hide();
+                    $("#transport_type_label").show();
+                    $("#transport_type").show();
+                    $("#passengers_ground_label").show();
+                    $("#passengers_ground").show();
+                    $("#distance_transport_label").show();
+                    $("#distance_transport").show();
+                    $(".show3").show();
+                }
+                else if (selected == "Accommodation") {
+                    $(".show1").hide();
+                    $(".show2").hide();
+                    $(".show3").hide();
+                    $(".show5").hide();
+                    $("#rating_label").show();
+                    $("#rating").show();
+                    $("#nights_label").show();
+                    $("#nights").show();
+                    $(".show4").show();
+                }
+                else if (selected == "Restaurant") {
+                    $(".show1").hide();
+                    $(".show2").hide();
+                    $(".show3").hide();
+                    $(".show4").hide();
+                    $("#restaurant_type_label").show();
+                    $("#restaurant_type").show();
+                    $("#spent_label").show();
+                    $("#spent").show();
+                    $(".show5").show();
+                }
+            })
+        })
+    </script>
+{% endblock %}
 
-                <label class="changing" id="electricity_activity_label" for="electricity_activity">What Specifically Used Electricity? </label>
-                <select class="changing" id="electricity_activity" name="electricity_activity">
-                    <option value="heater">Portable Heater</option>
-                    <option value="A/C">A/C (Window/Wall)</option>
-                    <option value="fan">Ceiling Fan</option>
-                    <option value="oven">Oven</option>
-                    <option value="dishwasher">Dishwasher</option>
-                    <option value="refrigerator">Refrigerator</option>
-                    <option value="TV">TV</option>
-                    <option value="desktop">Desktop PC</option>
-                    <option value="laptop">Laptop</option>
-                    <option value="monitor">Monitor</option>
-                </select><br class="show1"><br class="show1">
-                <label class="changing" id="duration_label" for="duration">Duration (in hrs or, for refrigerator, days): </label>
-                <input class="changing" id="duration" type="text" name="duration"><br class="show1"><br class="show1">
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark text-white rounded-lg" id="title-card" height="300px">
+                <img class="card-img" src="{{ url_for('static', filename='download.jpg') }}" alt="Green Background Img">
+                <div class="card-img-overlay d-flex align-items-center justify-content-center">
+                    <h2 class="card-text">Carbon Estimator</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header">Activity Form</h5>
+                <div class="card-body">
+                    <form action="{{ url_for('formdata') }}" method="post">
+                        <div class="form-group">
+                            <label for="name">Username/Nickname:</label>
+                            <input type="text" class="form-control" id="name" name="user_name" />
+                        </div>
+                        <br class="show"><br class="show">
+                        <div class="form-group">
+                            <label for="activity">Activity (Choose One): </label>
+                            <select class="form-control" id="activity" name="activity" size="4">
+                                <option value="Electricity">Used Electricity</option>
+                                <option value="Flight">Took a Flight</option>
+                                <option value="Transportation">Ground Transportation</option>
+                                <option value="Accommodation">Travel Accommodation (Hotels, Bed n Breakfast, etc.)</option>
+                                <option value="Restaurant">Restaurant/Eating Joint</option>
+                            </select>
+                        </div>
+                        <br><br>
+                        <div class="form-group">
+                            <label class="changing" id="electricity_activity_label" for="electricity_activity">What Specifically Used Electricity? </label>
+                            <select class="changing form-control" id="electricity_activity" name="electricity_activity">
+                                <option value="heater">Portable Heater</option>
+                                <option value="A/C">A/C (Window/Wall)</option>
+                                <option value="fan">Ceiling Fan</option>
+                                <option value="oven">Oven</option>
+                                <option value="dishwasher">Dishwasher</option>
+                                <option value="refrigerator">Refrigerator</option>
+                                <option value="TV">TV</option>
+                                <option value="desktop">Desktop PC</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="monitor">Monitor</option>
+                            </select>
+                        </div>
+                        <br class="show1"><br class="show1">
+                        <div class="form-group">
+                            <label class="changing" id="duration_label" for="duration">Duration (in hrs or, for refrigerator, days): </label>
+                            <input class="changing form-control" id="duration" type="text" name="duration">
+                        </div>
+                        <br class="show1"><br class="show1">
+                        <div class="form-group">
+                            <label class="changing" id="passengers_label" for="passengers">Number of Passengers: </label>
+                            <input class="changing form-control" id="passengers" type="text" name="passengers">
+                        </div>
+                        <br class="show2"><br class="show2">
+                        <div class="form-group">
+                            <label class="changing" id="departure_label" for="departure">What was your departure airport (3-letter code)?</label>
+                            <input class="changing form-control" id="departure" type="text" name="departure">
+                        </div>
+                        <br class="show2"><br class="show2">
+                        <div class="form-group">
+                            <label class="changing" id="arrival_label" for="arrival">What was your arrival airport (3-letter code)?</label>
+                            <input class="changing form-control" id="arrival" type="text" name="arrival">
+                        </div>
+                        <br class="show2"><br class="show2">
+                        <div class="form-group">
+                            <label class="changing" id="transport_type_label" for="transport_type">Type of Ground Transportation:</label>
+                            <select class="changing form-control" id="transport_type" name="transport_type">
+                                <option value="car">Car/Passenger Vehicle</option>
+                                <option value="bus">Bus</option>
+                                <option value="intercity_train">Intercity Rail</option>
+                                <option value="transit_rail">Transit Rail (Subway, Tram, Commuter)</option>
+                                <option value="motorcycle">Motorcycle</option>
+                            </select>
+                        </div>
+                        <br class="show3"><br class="show3">
+                        <div class="form-group">
+                            <label class="changing" id="passengers_ground_label" for="passengers_ground">Number of Passengers: </label>
+                            <input class="changing form-control" id="passengers_ground" type="text" name="passengers_ground">
+                        </div>
+                        <br class="show3"><br class="show3">
+                        <div class="form-group">
+                            <label class="changing" id="distance_transport_label" for="distance_transport">Distance Traveled (mi): </label>
+                            <input class="changing form-control" id="distance_transport" type="text" name="distance_transport">
+                        </div>
+                        <br class="show3"><br class="show3">
+                        <div class="form-group">
+                            <label class="changing" id="rating_label" for="rating">Hotel Rating (integer): </label>
+                            <input class="changing form-control" id="rating" type="text" name="rating">
+                        </div>
+                        <br class="show4"><br class="show4">
+                        <div class="form-group">
+                            <label class="changing" id="nights_label" for="nights">Number of Nights Stayed: </label>
+                            <input class="changing form-control" id="nights" type="text" name="nights">
+                        </div>
+                        <br class="show4"><br class="show4">
+                        <div class="form-group">
+                            <label class="changing" id="restaurant_type_label" for="restaurant_type">Type of Restaurant: </label>
+                            <select class="changing form-control" id="restaurant_type" name="restaurant_type">
+                                <option value="full_service">Full Service (sit down, cafe)</option>
+                                <option value="limited_service">Limited Service (fast food, fast casual)</option>
+                                <option value="other">Other (bar, snack joint, etc.)</option>
+                            </select>
+                        </div>
+                        <br class="show5"><br class="show5">
+                        <div class="form-group">
+                            <label class="changing" id="spent_label" for="spent">Amount Spent (USD): </label>
+                            <input class="changing form-control" id="spent" type="text" name="spent"><br class="show5"><br class="show5">
+                        </div>
+                        <br>
+                        <button id="submitForm" type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
-                <label class="changing" id="passengers_label" for="passengers">Number of Passengers: </label>
-                <input class="changing" id="passengers" type="text" name="passengers"><br class="show2"><br class="show2">
-                <label class="changing" id="departure_label" for="departure">What was your departure airport (3-letter code)?</label>
-                <input class="changing" id="departure" type="text" name="departure"><br class="show2"><br class="show2">
-                <label class="changing" id="arrival_label" for="arrival">What was your arrival airport (3-letter code)?</label>
-                <input class="changing" id="arrival" type="text" name="arrival"><br class="show2"><br class="show2">
-
-                <label class="changing" id="transport_type_label" for="transport_type">Type of Ground Transportation:</label>
-                <select class="changing" id="transport_type" name="transport_type">
-                    <option value="car">Car/Passenger Vehicle</option>
-                    <option value="bus">Bus</option>
-                    <option value="intercity_train">Intercity Rail</option>
-                    <option value="transit_rail">Transit Rail (Subway, Tram, Commuter)</option>
-                    <option value="motorcycle">Motorcycle</option>
-                </select>
-                <label class="changing" id="passengers_ground_label" for="passengers_ground">Number of Passengers: </label>
-                <input class="changing" id="passengers_ground" type="text" name="passengers_ground"><br class="show3"><br class="show3">
-                <label class="changing" id="distance_transport_label" for="distance_transport">Distance Traveled (mi): </label>
-                <input class="changing" id="distance_transport" type="text" name="distance_transport"><br class="show3"><br class="show3">
-
-                <label class="changing" id="rating_label" for="rating">Hotel Rating (integer): </label>
-                <input class="changing" id="rating" type="text" name="rating"><br class="show4"><br class="show4">
-                <label class="changing" id="nights_label" for="nights">Number of Nights Stayed: </label>
-                <input class="changing" id="nights" type="text" name="nights"><br class="show4"><br class="show4">
-                
-                <label class="changing" id="restaurant_type_label" for="restaurant_type">Type of Restaurant: </label>
-                <select class="changing" id="restaurant_type" name="restaurant_type">
-                    <option value="full_service">Full Service (sit down, cafe)</option>
-                    <option value="limited_service">Limited Service (fast food, fast casual)</option>
-                    <option value="other">Other (bar, snack joint, etc.)</option>
-                </select>
-                <label class="changing" id="spent_label" for="spent">Amount Spent (USD): </label>
-                <input class="changing" id="spent" type="text" name="spent"><br class="show5"><br class="show5">
-
-                <button id="submitForm" type="submit">Submit</button>
-
-        </p>
-    </form>
-  </body>
-</html>

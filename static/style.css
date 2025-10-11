@@ -4,16 +4,24 @@
 } 
 
 @font-face {
-    font-family: 'De-Martega';
-    src: url("{{ url_for('static', filename='De-Martega.otf') }}") format("opentype");
+    font-family: 'Mirage-Tropic';
+    src: url('Mirage-Tropic.otf') format("opentype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 h2 {
-    font-family: 'De-Martega', serif;
-    font-size: 100px;
+    font-family: 'Mirage-Tropic', serif;
+    font-size: 150px;
+}
+
+h3 {
+    font-size: 30px;
+}
+
+#card-link {
+    font-size: 20px;
 }
 
 .card-img {
@@ -45,4 +53,39 @@ h2 {
 #card5 {
     background-color: rgba(2, 80, 35, 0.2);
     border-color:rgba(2, 80, 35, 1);
+}
+
+#add-data {
+    border: solid black;
+}
+
+#card6 {
+    background-color: rgba(142, 182, 155, 0.2);
+    border-color: rgba(142, 182, 155, 1) 
+}
+
+#card7 {
+    background-color: rgba(118, 148, 76, 0.2);
+    border-color: rgba(118, 148, 76, 1)
+}
+
+#card8 {
+    background-color:  rgba(94, 140, 49, 0.2);
+    border-color: rgba(94, 140, 49, 1);
+}
+
+#card9 {
+    background-color: rgba(50, 100, 18, 0.2);
+    border-color: rgba(50, 100, 18, 1)
+}
+
+#card10 {
+    background-color: rgba(2, 80, 35, 0.2);
+    border-color:rgba(2, 80, 35, 1);
+}
+
+#card11 {
+    background-color: rgba(12, 108, 52, 0.2);
+    border-color:rgb(12, 108, 52);
+    
 }

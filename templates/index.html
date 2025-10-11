@@ -7,10 +7,10 @@
 {% block content %}
    <div class="row">
       <div class="col-12">
-         <div class="card bg-dark text-white" height="300px">
+         <div class="card bg-dark text-white rounded-lg" height="300px">
             <img class="card-img" src="{{ url_for('static', filename='download.jpg') }}" alt="Green Background Img">
             <div class="card-img-overlay d-flex align-items-center justify-content-center">
-               <h2 class="card-text">CARBON ESTIMATOR</h2>
+               <h2 class="card-text">Carbon Estimator</h2>
             </div>
          </div>
       </div>
@@ -69,118 +69,13 @@
    <br><br>
    <div class="row">
       <div class="col-12">
-         <div class="card text-center" width="100%">
+         <div class="card text-center" id="add-data" width="100%">
             <div class="card-body">
                <h3 class="card-text">Sustainability starts with you.</h2>
-               <a href="/add_data" class="card-link">Start tracking your footprint now.</a>
+               <a href="/add_data" class="card-link" id="card-link">Start tracking your footprint now.</a>
             </div>
          </div>
       </div>
    </div>
    <br><br>
-   <table id="data_table" class="table table-striped">
-      <thead>
-         <th>Id</th>
-         <th>Name</th>
-         <th>Activity</th>
-         <th>Electricity Details</th>
-         <th>Flight Details</th>
-         <th>Transportation Details </th>
-         <th>Accommodation Details</th>
-         <th>Restaurant Details</th>
-         <th>CO2e</th>
-         <th>#</th>
-      </thead>
-      <tbody>
-      </tbody>
-   </table>
-{% endblock %}
-
-{% block scripts %}
-   <script>
-      $(document).ready( function () {
-         $('#data_table').DataTable({
-            ajax: '/api/data',
-            columns: [
-               {data: 'id'},
-               {data: 'name'},
-               {data: 'activity'},
-               {
-                  data: null,
-                  render: function (data, type, row) {
-                     const act = row.elecactivity || "N/A"; 
-                     const dur = row.duration || "N/A";
-                     const pow = row.power_usage || "N/A";
-                     if (act === "N/A") {
-                        return "Did not use electricity!"
-                     }
-                     else {
-                        return `Used ${act} for ${dur} hrs, resulting in ${pow} kWh being used.`
-                     }
-                  }
-               },
-               {
-                  data: null,
-                  render: function (data, type, row) {
-                     const distfly = row.distance_flight || "N/A";
-                     const passfly = row.passengers_flight || "N/A"
-                     if (distfly === "N/A") {
-                        return "Didn't go on a flight!"
-                     }
-                     else {
-                        return `Flew on a ${distfly} mi flight with ${passfly} passengers.`
-                     }                     
-                  }
-               },
-               {
-                  data: null,
-                  render: function(data, type, row) {
-                     const typetrans = row.transport_type || "N/A";
-                     const disttrans = row.distance_transport || "N/A";
-                     const passtrans = row.passengers_transport || "N/A";
-                     if (typetrans === "N/A") {
-                        return "Did not use grand transport!"
-                     }
-                     else {
-                        return `Went on a ${typetrans} for ${disttrans} mi with ${passtrans} passengers.`
-                     }
-                  }
-               },
-               {
-                  data: null,
-                  render: function(data, type, row) {
-                     const rat = row.rating || "N/A";
-                     const nit = row.nights || "N/A";
-                     if (rat === "N/A") {
-                        return "Did not stay in accommodation!"
-                     }
-                     else {
-                        return `Stayed at a ${rat} hotel for ${nit} nights.`
-                     }
-                  }
-               },
-               {
-                  data: null,
-                  render: function(data, type, row) {
-                     const resttype = row.restaurant_type || "N/A";
-                     const spent = row.spent || "N/A";
-                     if (resttype === "N/A") {
-                        return "Did not dine at a restaurant!"
-                     }
-                     else {
-                        return `Dined at a ${resttype} restaurant and spent ${spent} USD.`
-                     }
-
-                  }
-               },
-               {
-                  data: null,
-                  render: function(data, type, row) {
-                     return `${co2e} kg`
-                  }
-               }
-            ]
-         });
-      } );
-   </script>
 {% endblock %}

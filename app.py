@@ -83,7 +83,7 @@ def dashboard(name):
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='DB Table')
+    return render_template('index.html', title='')
 
 @app.route('/add_data')
 def add_data():

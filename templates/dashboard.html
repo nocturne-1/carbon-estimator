@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
+{% block head_extra %}
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock %}
+
 {% block content %}
    <body>
       <main class="mt-5-pt-3">
          <div class="container-fluid">
             <div class="row">
-               <div class="col-md-12 fw-bold fs-2">Hello, {{name}}. Your total carbon emissions (CO2e) are {{total}} kg.</div>
+               <div class="col-md-12 fw-bold fs-1">Hello, {{name}}. Your total carbon emissions (CO2e) are {{total}} kg.</div>
             </div>
          </div>
       </main>
       <br><br>
       <div class="row">
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card6">
                <div class="card-body">
                   <h5 class="card-title">Electricity</h5>
                   <p class="card-text">You have used electricity {{counts.get("electricity", 0)}} times, totaling {{tba.get("electricity", 0)}} kg in CO2e.</p>
@@ -20,7 +24,7 @@
             </div>
          </div>
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card7">
                <div class="card-body">
                   <h5 class="card-title">Transportation</h5>
                   <p class="card-text">You have used transportation {{counts.get("transportation", 0)}} times, totaling {{tba.get("transportation", 0)}} kg in CO2e.</p>
@@ -28,7 +32,7 @@
             </div>
          </div>
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card8">
                <div class="card-body">
                   <h5 class="card-title">Flight</h5>
                   <p class="card-text">You have taken {{counts.get("flight", 0)}} flights, totaling {{tba.get("flight", 0)}} kg in CO2e.</p>
@@ -39,7 +43,7 @@
       <br><br>
       <div class="row">
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card9">
                <div class="card-body">
                   <h5 class="card-title">Accommodation</h5>
                   <p class="card-text">You have stayed in accommodation {{counts.get("accommodation", 0)}} times, totaling {{tba.get("accommodation", 0)}} kg in CO2e.</p>
@@ -47,7 +51,7 @@
             </div>
          </div>
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card10">
                <div class="card-body">
                   <h5 class="card-title">Restaurant</h5>
                   <p class="card-text">You have dined in restaurants {{counts.get("restaurant", 0)}} times, totaling {{tba.get("restaurant", 0)}} kg in CO2e.</p>
@@ -55,10 +59,9 @@
             </div>
          </div>
          <div class="col-sm-4">
-            <div class="card">
+            <div class="card" id="card11">
                <div class="card-body">
                   <h5 class="card-title">Add</h5>
-                  <p class="card-text">Add a new activity!</p>
                   <a href="/add_data" class="card-link">Add here</a>
                </div>
             </div>
@@ -92,7 +95,6 @@
                            <th>Accommodation Details</th>
                            <th>Restaurant Details</th>
                            <th>CO2e</th>
-                           <th>#</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -130,17 +132,18 @@
                   datasets: [{
                      data: chart_values,
                      backgroundColor: [
-                     "rgba(5, 31, 32, 0.2)",
-                     "rgba(11, 43, 38, 0.2)",
-                     "rgba(22, 56, 50, 0.2)",
-                     "rgba(35, 83, 71, 0.2)",
-                     "rgba(142, 182, 155, 0.2)"],
+                     "rgba(142, 182, 155, 0.2)",
+                     "rgba(118, 148, 76, 0.2)",
+                     "rgba(94, 140, 49, 0.2)",
+                     "rgba(50, 100, 18, 0.2)",
+                     "rgba(2, 80, 35, 0.2)"
+                     ],
                      borderColor: [
-                     "rgba(5, 31, 32, 1)",
-                     "rgba(11, 43, 38, 1)",
-                     "rgba(22, 56, 50, 1)",
-                     "rgba(35, 83, 71, 1)",
-                     "rgba(142, 182, 155, 1)"
+                     "rgba(142, 182, 155, 1)",
+                     "rgba(118, 148, 76, 1)",
+                     "rgba(94, 140, 49, 1)",
+                     "rgba(50, 100, 18, 1)",
+                     "rgba(2, 80, 35, 1)"
                      ],
                      borderWidth: 1
                }]
@@ -238,7 +241,7 @@
                {
                   data: null,
                   render: function(data, type, row) {
-                     return `${co2e} kg`
+                     return `${row.co2e} kg`
                   }}
             ]
          });
