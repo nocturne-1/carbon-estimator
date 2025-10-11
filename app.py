@@ -35,7 +35,7 @@ class Profile(db.Model):
     restaurant_type = db.Column(db.String(20), unique=False, nullable=True)
     spent = db.Column(db.Integer, unique=False, nullable=True)
 
-    co2e = db.Column(db.String(20), unique=False, nullable=False)
+    co2e = db.Column(db.Float, unique=False, nullable=False)
 
     def to_dict(self):
         return {
@@ -78,6 +78,7 @@ def dashboard(name):
     tba_dict = {activity: round(total, 2) for activity, total in total_by_activity}
     activity_counts = db.session.query(Profile.activity, func.count(Profile.activity)).filter_by(name=name).group_by(Profile.activity).all()
     counts_dict = {activity: count for activity, count in activity_counts}
+    print(counts_dict)
     return render_template('dashboard.html', name=name, total=total, counts=counts_dict, tba=tba_dict, info=user_info)
 
 
@@ -95,15 +96,17 @@ def data():
 
 electricity_data = {
     "heater": 1.5,
+    "heating": 10,
     "A/C": 1.2,
-    "fan": 0.075,
     "oven": 2.3,
-    "dishwasher": 2,
+    "dishwasher": 1,
     "refrigerator": 50,
-    "TV": 0.03,
+    "TV": 0.05,
     "desktop": 0.15,
     "laptop": 0.05,
-    "monitor": 0.08
+    "monitor": 0.08,
+    "lighting": 0.02,
+    "laundry": 1.5
 }  
 
 def api_request_elec(power_usage):
@@ -225,7 +228,7 @@ def api_request_transportation(type, distance, passengers):
 		    "distance_unit": "mi"
 	    }
     }
-    elif type == "intercity_train":
+    elif type == "train":
         transport_request = {
             "emission_factor": {
 		        "activity_id": "passenger_train-route_type_intercity_other_routes-fuel_source_na",
@@ -241,7 +244,7 @@ def api_request_transportation(type, distance, passengers):
 		    "distance_unit": "mi"
 	    }
     }
-    elif type == "transit_rail":
+    elif type == "rail":
         transport_request = {
             "emission_factor": {
 		        "activity_id": "passenger_train-route_type_urban-fuel_source_na",

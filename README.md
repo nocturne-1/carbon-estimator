@@ -1,2 +1,19 @@
-# carbon-estimator
-Trying to build an Android App that shows the carbon footprint of each user's activities, with a daily leaderboard for whoever has the least carbon emissions.
+### Carbon Estimator
+Hi! This project is carbon-estimator, a web app that allows users to see the carbon footprint of each of their activities, and displays a personalized carbon footprint dashboard to show users once activity footprints have been calculated. 
+
+## Why I Made Carbon Estimator
+I made carbon estimator, because I recently attended a presentation on sustainability in everyday life at my school discussing how various activities all contribute to society's larger carbon footprint, where I understood that lowering emissions can stem from everyone making more sustainable individual choices. 
+
+I believe more sustainable decisions can be made only once you understand the impact of your current decisions and see visually how making sustainable decisions leads to the release of fewer carbon emissions on a personal level. A great way of bringing that information to people, in my mind, was by allowing people to see the numerical amount of kg of CO2 that is released by certain actions - from energy use to transportation to accommodation. That was how carbon estimator was born: a platform to show individuals the collective and individual carbon footprint of their activities across various sectors. 
+
+## How I Made Carbon Estimator
+I used Flask and SQL-Alchemy to write data from a form into my database on the server (back-end). After configuring SQLite and setting an instance of my database (db = SQLAlchemy(app)), I created a class to structure my database (this class is Profile) with all the columns/fields I needed in my db. When structuring my db, certain columns are allowed to be null (activity-sector-specific responses, as the user can only submit an activity in one sector and not all of them), where I set nullable to True, while other required fields are not allowed to be null (nullable=False).
+
+After initializing my database, I set up routing in Flask (@app.route), where I had the '/' route render my main "index.html" file, the '/add-data' route render the form ("form.html"), the '/add' route take data from the form and commit them to the db, the '/dashboard/<name>' route renders my user-specific dashboard in "dashboard.html" and calculates for certain values, like the sum total of all carbon emissions from activities, which are passed to "dashboard.html", and the '/api/data' route gives all the data from the database to the the table in "dashboard.html" to be loaded up using an AJAX request. It is important to note that after form data is collected and submission (on submission), the dashboard route is automatically returned to take the user to their personalized dashboard. 
+
+Additionally, I had to take user form data (answers) and find out the carbon emissions released based on that data, also to be stored in the db. Therefore, I created multiple functions which make 'POST' requests to the Climatiq API where the carbon footprint is automatically calculated for certain activities based on the values for each field (ex: power usage when calculating for emissions due to energy) - api_request_elec(), api_request_flight(), api_request_transportation(), api_request_accommodation(), and api_request_restaurant. For the flight, I decided to also integrate the AirportGap API, requesting it to calculate the distance between two airports in miles, as I figured users wouldn't know the flight length off the top of their head.
+
+
+Going back to routing, the '/add' route is sources form inputs and commits these inputs into the db. For each activity, only the activity-sector-specific questions are sourced from the form and committed to the db and the rest of the columns are null, which was achieved using conditionals to check the value when asking what sector the user activity is in.  
+
+For formatting the form (setting custom question visibility), I used jQuery, while for the table and the chart it was Charts.js and Datatables.js. For overall styling across all templates, I used Bootstrap 5 to make the website look much cleaner and display info in an neat grid with customizable aesthetics (setting custom background and border colors for my cards in the index page)
