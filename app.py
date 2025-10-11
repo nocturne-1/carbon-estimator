@@ -8,7 +8,6 @@ import json
 
 app = Flask(__name__)
 
-app.debug = True
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -454,4 +453,4 @@ def erase(id):
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
