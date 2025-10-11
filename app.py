@@ -1,5 +1,4 @@
 import sqlite3
-import os
 from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
@@ -112,7 +111,7 @@ electricity_data = {
 }  
 
 def api_request_elec(power_usage):
-    api_key_1 = os.environ.get("API_KEY_1")
+    api_key_1 = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -136,7 +135,7 @@ def api_request_elec(power_usage):
         return
     
 def flight_distance(departure, arrival):
-    api_key_2 = os.environ.get("API_KEY_2")
+    api_key_2 = "RVhHJqrAj8MvzhqGubhkKTbG"
     url = "https://airportgap.com/api/airports/distance"
     headers = {
         "Content-Type": "application/json",
@@ -156,7 +155,7 @@ def flight_distance(departure, arrival):
         return
 
 def api_request_flight(passengers, distance):
-    api_key_1 = os.environ.get("API_KEY_1")
+    api_key_1 = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -193,7 +192,7 @@ def api_request_flight(passengers, distance):
         return
 
 def api_request_transportation(type, distance, passengers):
-    api_key_1 = os.environ.get("API_KEY_1")
+    api_key_1 = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -286,7 +285,7 @@ def api_request_transportation(type, distance, passengers):
         return
 
 def api_request_acommodation(rating, nights):
-    api_key_1 = os.environ.get("API_KEY_1")
+    api_key_1 = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -321,7 +320,7 @@ def api_request_acommodation(rating, nights):
     
 
 def api_request_restaurant(type, spent):
-    api_key_1 = os.environ.get("API_KEY_1")
+    api_key_1 = "0ZB2BTF0F11737QNANS38E7JMW"
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
