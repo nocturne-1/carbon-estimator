@@ -90,9 +90,9 @@ def index():
 def add_data():
     return render_template("form.html")
 
-@app.route('/api/data')
-def data():
-    return {'data': [profile.to_dict() for profile in Profile.query]}
+@app.route('/api/data/<name>')
+def data(name):
+    return {'data': [profile.to_dict() for profile in Profile.query.filter_by(name=name).all()]}
 
 electricity_data = {
     "heater": 1.5,

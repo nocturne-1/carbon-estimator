@@ -167,7 +167,7 @@
    <script>
       $(document).ready( function () {
          $('#data_table').DataTable({
-            ajax: '/api/data',
+            ajax: '/api/data/{{ name }}',
             columns: [
                {data: 'id'},
                {data: 'name'},
