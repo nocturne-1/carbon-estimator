@@ -15,8 +15,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-api_key_1 = os.environ.get("API_KEY_1")
-api_key_2 = os.environ.get("API_KEY_2")
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -114,6 +112,7 @@ electricity_data = {
 }  
 
 def api_request_elec(power_usage):
+    api_key_1 = os.environ.get("API_KEY_1")
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -137,6 +136,7 @@ def api_request_elec(power_usage):
         return
     
 def flight_distance(departure, arrival):
+    api_key_2 = os.environ.get("API_KEY_2")
     url = "https://airportgap.com/api/airports/distance"
     headers = {
         "Content-Type": "application/json",
@@ -156,6 +156,7 @@ def flight_distance(departure, arrival):
         return
 
 def api_request_flight(passengers, distance):
+    api_key_1 = os.environ.get("API_KEY_1")
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -192,6 +193,7 @@ def api_request_flight(passengers, distance):
         return
 
 def api_request_transportation(type, distance, passengers):
+    api_key_1 = os.environ.get("API_KEY_1")
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -284,6 +286,7 @@ def api_request_transportation(type, distance, passengers):
         return
 
 def api_request_acommodation(rating, nights):
+    api_key_1 = os.environ.get("API_KEY_1")
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
@@ -318,6 +321,7 @@ def api_request_acommodation(rating, nights):
     
 
 def api_request_restaurant(type, spent):
+    api_key_1 = os.environ.get("API_KEY_1")
     url = "https://api.climatiq.io/data/v1/estimate"
     headers = {
         "Content-Type": "application/json",
