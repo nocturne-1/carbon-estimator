@@ -49,6 +49,7 @@ So, naturally, I faced some issues and redirected a lot of times:
 - I never had a catch-all return redirect() statement after committing to my database at some point, so I kept getting an error
 - there were also several times where I would change the structure of my db (adding columns), and keep my original instance (site.db file), which led to internal server errors at some points
 - finally, when displaying info on my dashboard page, I was summing the CO2 emissions data when it was a string, not a float, and I was not rounding it, leading to errors and float precision errors; then, once I changed my CO2 emission value to a float, I never stored it as that in my database, and so naturally I did not get an accurate value for CO2 emission sums by activity type.
+
 For the scope of the project, I do think I was able to avoid making a lot of mistakes due to my copious usage of print() statements in my code and some very, very helpful materials including tutorials on how to build a Flask database, descriptions of what SQL commands are and how to use them, tutorials on AJAX requests and creating a table using DataTables.js, the documentation for Bootstrap, descriptions of how template inheritance works, and so much more. 
 
 From the mistakes I did make, I was also able to gain a better understanding of Flask and database structure, Bootstrap and HTML/CSS in general (I had no idea a tag could have more than one class, for example!), and so much more!
