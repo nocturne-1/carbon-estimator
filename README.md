@@ -1,5 +1,6 @@
 ### Carbon Estimator
 Hi! This project is carbon-estimator, a web app that allows users to see the carbon footprint of each of their activities, and displays a personalized carbon footprint dashboard to show users once activity footprints have been calculated.This project was made to be shipped for the Athena Award, and more specifically, I am submitting this to the Level Up Challenge, as it is my first web project with a back-end!
+[![Athena Award Badge](https://img.shields.io/endpoint?url=https%3A%2F%2Faward.athena.hackclub.com%2Fapi%2Fbadge)](https://award.athena.hackclub.com?utm_source=readme)
 
 ## Why I Made Carbon Estimator
 I made carbon estimator, because I recently attended a presentation on sustainability in everyday life at my school discussing how various activities all contribute to society's larger carbon footprint, where I understood that lowering emissions can stem from everyone making more sustainable individual choices. 
