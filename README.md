@@ -36,6 +36,7 @@ I did struggle a lot during this project, as this was my first project doing a l
 - using the template inheritance structure & blocks
 - making and using AJAX requests
 - making API requests in Python.
+
 So, naturally, I faced some issues and redirected a lot of times:
 - first, I was accessing and manipulating form data in a JS file, which I was going to use to get data to commit into Google Firebase; I realized quickly that it was too much work, I had no idea what I was doing on the Firebase side, and I had issues accessing responses to specific form questions
 - then, I found Flask and set up Flask, but had issues accessing form responses in my Flask request and committing them to a database (it turns out I never gave my user input tags a name, so Flask couldn't pick up any of them; but it took a bit of trial and error for me to realize that)
